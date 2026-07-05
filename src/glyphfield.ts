@@ -43,10 +43,13 @@ export async function createGlyphField(canvas: HTMLCanvasElement, blocks: FieldB
   let totalH = 0;
   let glyphs: Glyph[] = [];
   let startTime = performance.now();
-  const cursor = { x: -9999, y: -9999, active: false };
+  // x/y is the eased position the physics reads; tx/ty is the raw pointer target.
+  const cursor = { x: -9999, y: -9999, tx: -9999, ty: -9999, active: false };
+  // Cached so we never call getBoundingClientRect() during a drag (forced reflow → jank).
+  let rect = canvas.getBoundingClientRect();
 
   function build() {
-    const rect = canvas.getBoundingClientRect();
+    rect = canvas.getBoundingClientRect();
     dpr = Math.min(window.devicePixelRatio || 1, 2);
     w = Math.max(240, rect.width);
 
@@ -105,6 +108,13 @@ export async function createGlyphField(canvas: HTMLCanvasElement, blocks: FieldB
     const elapsed = now - startTime;
     ctx!.clearRect(0, 0, w, totalH);
 
+    // Chase the pointer target every frame. Touch events arrive in sparse, browser-coalesced
+    // bursts; easing here keeps the scatter fluid between them instead of snapping/freezing.
+    if (cursor.active) {
+      cursor.x += (cursor.tx - cursor.x) * 0.5;
+      cursor.y += (cursor.ty - cursor.y) * 0.5;
+    }
+
     for (const g of glyphs) {
       const t = Math.max(0, elapsed - g.delay);
       const target = Math.min(1, t / 420);
@@ -149,41 +159,59 @@ export async function createGlyphField(canvas: HTMLCanvasElement, blocks: FieldB
     requestAnimationFrame(frame);
   }
 
-  function setCursor(clientX: number, clientY: number) {
-    const rect = canvas.getBoundingClientRect();
-    cursor.x = clientX - rect.left;
-    cursor.y = clientY - rect.top;
+  function setTarget(clientX: number, clientY: number) {
+    cursor.tx = clientX - rect.left;
+    cursor.ty = clientY - rect.top;
+    if (!cursor.active) {
+      // First contact: snap so we don't sweep the scatter in from the previous spot.
+      cursor.x = cursor.tx;
+      cursor.y = cursor.ty;
+    }
     cursor.active = true;
   }
 
-  // Mouse / pen: the scatter follows the hovering cursor.
+  // One unified pointer path for mouse, pen and touch. Touch pointers get *implicit* capture
+  // on pointerdown, so moves keep streaming for the whole drag without setPointerCapture
+  // (which is buggy for touch on iOS/Android). touch-action:none stops the page from scrolling.
   canvas.addEventListener("pointermove", (e) => {
-    if (e.pointerType === "touch") return; // touch is handled by the touch events below
-    setCursor(e.clientX, e.clientY);
-  });
+    // Recover the intermediate samples the browser batched into this event — touch is coalesced
+    // aggressively during fast drags, so the newest coalesced point is the real finger position.
+    const evs = e.getCoalescedEvents?.() ?? [];
+    const last = evs.length ? evs[evs.length - 1] : e;
+    setTarget(last.clientX, last.clientY);
+    if (e.pointerType !== "mouse") e.preventDefault();
+  }, { passive: false });
   canvas.addEventListener("pointerdown", (e) => {
-    if (e.pointerType === "touch") return;
-    setCursor(e.clientX, e.clientY);
-  });
-  canvas.addEventListener("pointerleave", (e) => {
-    if (e.pointerType === "touch") return;
-    cursor.active = false;
-  });
+    setTarget(e.clientX, e.clientY);
+    if (e.pointerType !== "mouse") e.preventDefault();
+  }, { passive: false });
+  const release = () => (cursor.active = false);
+  canvas.addEventListener("pointerup", release);
+  canvas.addEventListener("pointercancel", release);
+  canvas.addEventListener("pointerleave", release);
+  canvas.style.touchAction = "none";
 
-  // Touch: drive the scatter with raw touch events. calling preventDefault on a non-passive
-  // touchmove is the one method that reliably stops the page from scrolling / hijacking the
-  // drag across iOS Safari, Android and Windows touchscreens (touch-action alone is flaky there).
-  const onTouch = (e: TouchEvent) => {
-    const p = e.touches[0];
-    if (p) setCursor(p.clientX, p.clientY);
-    e.preventDefault();
+  // Touch Events fallback. Some touchscreens fire Touch Events but do NOT synthesize Pointer
+  // Events for touch — so the pointer handlers above never run. These cover that case; on
+  // devices that fire both, setTarget is idempotent.
+  const touchAt = (e: TouchEvent) => {
+    const p = e.touches[0] ?? e.changedTouches[0];
+    if (p) setTarget(p.clientX, p.clientY);
   };
-  canvas.addEventListener("touchstart", onTouch, { passive: false });
-  canvas.addEventListener("touchmove", onTouch, { passive: false });
+  canvas.addEventListener("touchstart", (e) => {
+    touchAt(e);
+    e.preventDefault();
+  }, { passive: false });
+  canvas.addEventListener("touchmove", (e) => {
+    touchAt(e);
+    e.preventDefault();
+  }, { passive: false });
   const endTouch = () => (cursor.active = false);
   canvas.addEventListener("touchend", endTouch);
   canvas.addEventListener("touchcancel", endTouch);
-  canvas.style.touchAction = "none";
+
+  // Keep the cached rect correct without touching it on the hot path.
+  window.addEventListener("scroll", () => (rect = canvas.getBoundingClientRect()), { passive: true });
 
   const ro = new ResizeObserver(() => build());
   ro.observe(canvas);

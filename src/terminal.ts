@@ -89,6 +89,8 @@ export class Terminal {
     screen.addEventListener("pointerdown", (e) => this.onDown(e));
     screen.addEventListener("pointermove", (e) => this.onMove(e));
     window.addEventListener("pointerup", () => this.onUp());
+    // If the browser ever steals the gesture, drop the drag so text can't freeze mid-pull.
+    window.addEventListener("pointercancel", () => this.onCancel());
 
     const fonts: any = (document as any).fonts;
     const flush = () => {
@@ -456,6 +458,17 @@ export class Terminal {
       block.active = true;
       this.ensureLoop();
     }
+  }
+
+  // Gesture stolen by the browser (e.g. a scroll took over): release the drag without treating
+  // it as a click, and let the letters spring back instead of freezing where they were.
+  private onCancel() {
+    if (!this.drag) return;
+    const { block } = this.drag;
+    block.canvas.style.cursor = "grab";
+    this.drag = null;
+    block.active = true;
+    this.ensureLoop();
   }
 
   private scrollToBottom() {

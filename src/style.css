@@ -10,7 +10,7 @@
 }
 
 * { box-sizing: border-box; }
-html, body { height: 100%; }
+html, body { height: 100%; overscroll-behavior: none; }
 
 body {
   margin: 0;
@@ -98,7 +98,9 @@ body::before {
 
 .oblock { animation: fade 0.16s ease both; }
 @keyframes fade { from { opacity: 0; } to { opacity: 1; } }
-.ocanvas { display: block; width: 100%; }
+/* touch-action:none so dragging a letter on a touchscreen grabs & stretches it instead of
+   being hijacked into a page/terminal scroll (which cancels the pointer and freezes the drag). */
+.ocanvas { display: block; width: 100%; touch-action: none; }
 
 /* visually-hidden mirror for screen readers, SEO, copy-paste */
 .sr {
