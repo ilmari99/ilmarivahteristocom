@@ -145,11 +145,17 @@ document.getElementById("chips")!.addEventListener("click", (e) => {
   input.focus();
 });
 
-// keep focus in the prompt unless a link on the canvas was clicked
-screen.addEventListener("pointerdown", () => setTimeout(() => input.focus(), 0));
+// keep focus in the prompt unless a link on the canvas was clicked (mouse only —
+// on touch this would pop the keyboard every time you tap to read)
+screen.addEventListener("pointerdown", (e) => {
+  if (e.pointerType === "touch") return;
+  setTimeout(() => input.focus(), 0);
+});
 
 // boot
 term.print([[t("// This is my vibe coded website, welcome!", C.dim)]], { instant: true });
 term.print([[t("// Type a command or tap one below. Don't drag and bend the text — it might break!", C.dim)]], { instant: true });
 run("whoami");
-input.focus();
+// Only auto-focus on devices with a fine pointer (mouse). On touch, focusing pops the
+// on-screen keyboard on load, which shrinks the viewport and misaligns/clips the layout.
+if (window.matchMedia("(pointer: fine)").matches) input.focus();

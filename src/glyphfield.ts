@@ -149,27 +149,40 @@ export async function createGlyphField(canvas: HTMLCanvasElement, blocks: FieldB
     requestAnimationFrame(frame);
   }
 
-  function setCursor(e: PointerEvent) {
+  function setCursor(clientX: number, clientY: number) {
     const rect = canvas.getBoundingClientRect();
-    cursor.x = e.clientX - rect.left;
-    cursor.y = e.clientY - rect.top;
+    cursor.x = clientX - rect.left;
+    cursor.y = clientY - rect.top;
     cursor.active = true;
   }
-  canvas.addEventListener("pointerdown", (e) => {
-    // Capture the pointer so a touch drag keeps streaming move events to us instead of
-    // being re-interpreted as a page scroll — this is what keeps the effect smooth on Android.
-    try { canvas.setPointerCapture(e.pointerId); } catch { /* ignore */ }
-    setCursor(e);
-    if (e.pointerType !== "mouse") e.preventDefault();
-  });
+
+  // Mouse / pen: the scatter follows the hovering cursor.
   canvas.addEventListener("pointermove", (e) => {
-    setCursor(e);
-    if (e.pointerType !== "mouse") e.preventDefault();
+    if (e.pointerType === "touch") return; // touch is handled by the touch events below
+    setCursor(e.clientX, e.clientY);
   });
-  const release = () => (cursor.active = false);
-  canvas.addEventListener("pointerup", release);
-  canvas.addEventListener("pointercancel", release);
-  canvas.addEventListener("pointerleave", release);
+  canvas.addEventListener("pointerdown", (e) => {
+    if (e.pointerType === "touch") return;
+    setCursor(e.clientX, e.clientY);
+  });
+  canvas.addEventListener("pointerleave", (e) => {
+    if (e.pointerType === "touch") return;
+    cursor.active = false;
+  });
+
+  // Touch: drive the scatter with raw touch events. calling preventDefault on a non-passive
+  // touchmove is the one method that reliably stops the page from scrolling / hijacking the
+  // drag across iOS Safari, Android and Windows touchscreens (touch-action alone is flaky there).
+  const onTouch = (e: TouchEvent) => {
+    const p = e.touches[0];
+    if (p) setCursor(p.clientX, p.clientY);
+    e.preventDefault();
+  };
+  canvas.addEventListener("touchstart", onTouch, { passive: false });
+  canvas.addEventListener("touchmove", onTouch, { passive: false });
+  const endTouch = () => (cursor.active = false);
+  canvas.addEventListener("touchend", endTouch);
+  canvas.addEventListener("touchcancel", endTouch);
   canvas.style.touchAction = "none";
 
   const ro = new ResizeObserver(() => build());
