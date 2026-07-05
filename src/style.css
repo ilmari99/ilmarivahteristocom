@@ -82,7 +82,7 @@ body::before {
 }
 .bar-link:hover { background: rgba(74, 222, 128, 0.12); }
 
-#banner { display: block; width: 100%; padding: 22px 20px 6px; cursor: crosshair; }
+#banner { display: block; width: 100%; padding: 22px 20px 6px; cursor: crosshair; touch-action: none; }
 
 .screen {
   position: relative;

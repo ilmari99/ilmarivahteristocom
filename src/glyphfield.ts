@@ -155,9 +155,21 @@ export async function createGlyphField(canvas: HTMLCanvasElement, blocks: FieldB
     cursor.y = e.clientY - rect.top;
     cursor.active = true;
   }
-  canvas.addEventListener("pointermove", setCursor);
-  canvas.addEventListener("pointerdown", setCursor);
-  canvas.addEventListener("pointerleave", () => (cursor.active = false));
+  canvas.addEventListener("pointerdown", (e) => {
+    // Capture the pointer so a touch drag keeps streaming move events to us instead of
+    // being re-interpreted as a page scroll — this is what keeps the effect smooth on Android.
+    try { canvas.setPointerCapture(e.pointerId); } catch { /* ignore */ }
+    setCursor(e);
+    if (e.pointerType !== "mouse") e.preventDefault();
+  });
+  canvas.addEventListener("pointermove", (e) => {
+    setCursor(e);
+    if (e.pointerType !== "mouse") e.preventDefault();
+  });
+  const release = () => (cursor.active = false);
+  canvas.addEventListener("pointerup", release);
+  canvas.addEventListener("pointercancel", release);
+  canvas.addEventListener("pointerleave", release);
   canvas.style.touchAction = "none";
 
   const ro = new ResizeObserver(() => build());
