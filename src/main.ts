@@ -10,7 +10,6 @@ const C = { text: "#e7e7e9", dim: "#6b6f76", green: "#7dd3a0", acc: "#4ade80", e
 const t = (text: string, color = C.text, weight = 500): Run => ({ text, color, weight });
 const link = (text: string, href: string): Run => ({ text, href, color: C.acc });
 const cmdlink = (text: string, cmd: string): Run => ({ text, cmd, color: C.acc });
-const BLANK: Paragraph = [];
 const lines = (arr: string[], color = C.text): Output => arr.map((l) => [t(l, color)]);
 
 const app = document.querySelector<HTMLDivElement>("#app")!;
@@ -22,14 +21,13 @@ const HELP: [string, string][] = [
   ["record", "competitions & hackathons"],
   ["irl", "life away from the screen"],
   ["stack", "tools I reach for"],
-  ["writing", "the blog — Ground Truth"],
-  ["read <slug>", "open a post"],
+  ["blog", "the blog — Ground Truth"],
   ["contact", "how to reach me"],
   ["clear", "clear the screen"],
 ];
 
-// every command becomes a chip (skip the ones needing an argument); help closes the list.
-const CHIP_CMDS = [...HELP.map(([c]) => c).filter((c) => !c.includes(" ")), "help"];
+// every command becomes a chip (skip the ones needing an argument).
+const CHIP_CMDS = HELP.map(([c]) => c).filter((c) => !c.includes(" "));
 
 app.innerHTML = `
   <div class="term" role="application" aria-label="Interactive terminal">
@@ -41,21 +39,22 @@ app.innerHTML = `
     </div>
     <canvas id="banner" aria-label="${esc(profile.name)} — ${esc(profile.tagline)}"></canvas>
     <div class="screen" id="screen"></div>
-    <form class="promptline" id="form" autocomplete="off">
-      <span class="ps1">${esc(profile.host)}:~$</span>
-      <input id="input" spellcheck="false" autocapitalize="off" autocomplete="off" aria-label="terminal input" />
-    </form>
     <div class="chips" id="chips" aria-label="command suggestions">
-      <span class="chips-lead">⇥ tab</span>
       ${CHIP_CMDS
         .map((c) => `<button data-cmd="${c}"><span class="chips-caret">›</span>${c}</button>`)
         .join("")}
     </div>
+    <div class="postview" id="postview" role="dialog" aria-label="Blog post" hidden>
+      <div class="postbar">
+        <button class="postback" id="postback"><span class="chips-caret">‹</span>back to terminal</button>
+      </div>
+      <article class="postbody" id="postbody"></article>
+    </div>
   </div>`;
 
 const screen = document.getElementById("screen")!;
-const input = document.getElementById("input") as HTMLInputElement;
-const form = document.getElementById("form") as HTMLFormElement;
+const postview = document.getElementById("postview") as HTMLDivElement;
+const postbody = document.getElementById("postbody") as HTMLElement;
 
 // interactive header — assembled from a point cloud, scatters under the cursor (also PreTeXt)
 createGlyphField(document.getElementById("banner") as HTMLCanvasElement, [
@@ -66,10 +65,6 @@ createGlyphField(document.getElementById("banner") as HTMLCanvasElement, [
 const term = new Terminal(screen, (c) => run(c));
 
 const commands: Record<string, (args: string[]) => Output | void> = {
-  help: () => [
-    [t("commands — tap one or type it", C.dim)],
-    ...HELP.map(([c, d]): Paragraph => [cmdlink(c.split(" ")[0], c.split(" ")[0]), t("  " + d, C.dim)]),
-  ],
   whoami: () => lines(whoami),
   now: () => lines(now),
   irl: () => lines(irl),
@@ -83,15 +78,13 @@ const commands: Record<string, (args: string[]) => Output | void> = {
           : [t("★ " + r.line)]
     ),
   stack: () => [[t(stack)]],
-  writing: () => [
+  blog: () => [
     [t("# Ground Truth — half-formed thoughts, sharpened in public", C.dim)],
-    ...posts.map((p): Paragraph => [cmdlink(p.title, "read " + p.slug), t("  — " + p.date + " · " + p.slug, C.dim)]),
-    [t("read one with: ", C.dim), t("read <slug>")],
+    ...posts.map((p): Paragraph => [cmdlink("• " + p.title, "read " + p.slug), t("  — " + p.date, C.dim)]),
+    [t("tap a post to open it.", C.dim)],
   ],
   read: (args) => {
-    const p = posts.find((x) => x.slug === args[0]);
-    if (!p) return [[t("no such post: " + (args[0] || ""), C.err), t("  — try ", C.dim), cmdlink("writing", "writing")]];
-    return [[t(p.title, C.green, 700), t("  — " + p.date, C.dim)], ...p.body.map((l): Paragraph => (l === "" ? BLANK : [t(l)]))];
+    openPost(args[0]);
   },
   contact: () => [
     [t("Best way to reach me is email:", C.dim)],
@@ -112,50 +105,47 @@ function run(raw: string) {
   const [name, ...args] = cmd.split(/\s+/);
   const fn = commands[name.toLowerCase()];
   if (!fn) {
-    term.print([[t("command not found: " + name, C.err), t("  — type ", C.dim), cmdlink("help", "help")]]);
+    term.print([[t("command not found: " + name, C.err)]]);
     return;
   }
   const out = fn(args);
   if (out) term.print(out);
 }
 
-form.addEventListener("submit", (e) => {
-  e.preventDefault();
-  const v = input.value;
-  input.value = "";
-  run(v);
-});
+// group body lines (blank line = paragraph break) and render the post in its own view
+function openPost(slug: string) {
+  const p = posts.find((x) => x.slug === slug);
+  if (!p) {
+    term.print([[t("no such post: " + (slug || ""), C.err), t("  — try ", C.dim), cmdlink("blog", "blog")]]);
+    return;
+  }
+  const paras: string[] = [];
+  let buf: string[] = [];
+  for (const l of p.body) {
+    if (l === "") { if (buf.length) { paras.push(buf.join(" ")); buf = []; } }
+    else buf.push(l);
+  }
+  if (buf.length) paras.push(buf.join(" "));
 
-// Tab completes / cycles through the known commands, like a real shell.
-input.addEventListener("keydown", (e) => {
-  if (e.key !== "Tab") return;
-  e.preventDefault();
-  const cur = input.value.trim().toLowerCase();
-  const matches = CHIP_CMDS.filter((c) => c.startsWith(cur));
-  const pool = matches.length ? matches : CHIP_CMDS;
-  const next = pool[(pool.indexOf(cur) + 1) % pool.length];
-  input.value = next;
+  postbody.innerHTML =
+    `<h1>${esc(p.title)}</h1><div class="postmeta">${esc(p.date)}</div>` +
+    paras.map((para) => `<p>${esc(para)}</p>`).join("");
+  postview.hidden = false;
+  postview.scrollTop = 0;
+}
+
+document.getElementById("postback")!.addEventListener("click", () => {
+  postview.hidden = true;
 });
 
 // chips run commands
 document.getElementById("chips")!.addEventListener("click", (e) => {
-  const t = (e.target as HTMLElement).closest("[data-cmd]") as HTMLElement | null;
-  if (!t) return;
-  run(t.getAttribute("data-cmd")!);
-  input.focus();
-});
-
-// keep focus in the prompt unless a link on the canvas was clicked (mouse only —
-// on touch this would pop the keyboard every time you tap to read)
-screen.addEventListener("pointerdown", (e) => {
-  if (e.pointerType === "touch") return;
-  setTimeout(() => input.focus(), 0);
+  const el = (e.target as HTMLElement).closest("[data-cmd]") as HTMLElement | null;
+  if (!el) return;
+  run(el.getAttribute("data-cmd")!);
 });
 
 // boot
 term.print([[t("// This is my vibe coded website, welcome!", C.dim)]], { instant: true });
-term.print([[t("// Type a command or tap one below. Don't drag and bend the text — it might break!", C.dim)]], { instant: true });
+term.print([[t("// Tap a command below to explore. Don't drag and bend the text — it might break!", C.dim)]], { instant: true });
 run("whoami");
-// Only auto-focus on devices with a fine pointer (mouse). On touch, focusing pops the
-// on-screen keyboard on load, which shrinks the viewport and misaligns/clips the layout.
-if (window.matchMedia("(pointer: fine)").matches) input.focus();
