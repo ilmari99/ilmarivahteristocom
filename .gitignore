@@ -33,3 +33,6 @@ pnpm-debug.log*
 # Netlify / Vercel local state
 .netlify
 .vercel
+
+# personal source material, not for the public repo
+linkedin-profile-*.pdf

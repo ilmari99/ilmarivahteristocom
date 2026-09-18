@@ -4,18 +4,27 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <title>ilmari@vahteristo — ML / computer-vision engineer</title>
+    <title>Ilmari Vahteristo — computer vision consultant, Finland</title>
     <meta
       name="description"
-      content="Ilmari Vahteristo — ML / computer-vision engineer. Perception systems for heavy industry: cameras, LiDAR, lasers on edge devices. A terminal you can talk to."
+      content="I help Finnish companies and manufacturers use cameras, sensors and machine learning in production, automation and decision-making. Based in Helsinki, on-site anywhere in Finland. Free 1-hour consultation."
     />
-    <meta property="og:title" content="ilmari@vahteristo" />
+    <link rel="canonical" href="https://ilmarivahteristo.com/" />
+    <meta property="og:title" content="Ilmari Vahteristo — computer vision and sensor systems for manufacturers" />
     <meta
       property="og:description"
-      content="Sub-millimeter from a meter away. Agents that beat the humans. Type a command."
+      content="Computer vision and AI/ML consultant in Helsinki. Cameras, LiDAR, radar and lasers in real production. Free 1-hour consultation — bring a problem, leave with an honest answer."
     />
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content="profile" />
+    <meta property="og:url" content="https://ilmarivahteristo.com/" />
+    <meta property="og:locale" content="en" />
+    <meta name="twitter:card" content="summary" />
     <meta name="theme-color" content="#0a0a0b" />
+    <!-- Marks JS as live before first paint, so the terminal hero can be sized only when it exists. -->
+    <script>
+      document.documentElement.className = "js";
+    </script>
+    <!--seo-jsonld-->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -24,7 +33,12 @@
     />
   </head>
   <body>
-    <div id="app"></div>
+    <div class="page">
+      <!-- Interactive terminal. Built by main.ts; absent entirely without JS. -->
+      <div id="app"></div>
+      <!-- The real page, rendered from src/content.ts at build time. -->
+      <!--seo-content-->
+    </div>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>
