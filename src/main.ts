@@ -2,11 +2,19 @@ import "./style.css";
 import { createGlyphField } from "./glyphfield";
 import { Terminal, type Run, type Paragraph, type Output } from "./terminal";
 import {
-  profile, whoami, now, irl, work, alsoShipped, projects, capabilities, consult, why, posts,
+  locales, isLocale, other, profile, PATHS, URLS,
+  type ChipCommand, type Content,
 } from "./content";
 
 const esc = (s: string) =>
   s.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]!));
+
+// Which language's page is this? The build writes <html lang> per page; nothing else in the
+// bundle knows, so this one read is what keeps the terminal in step with the page under it.
+const langAttr = document.documentElement.lang;
+const locale = isLocale(langAttr) ? langAttr : "en";
+const c: Content = locales[locale];
+const alt = other(locale);
 
 const C = { text: "#e7e7e9", dim: "#6b6f76", green: "#7dd3a0", acc: "#4ade80", err: "#f87171", name: "#f4f4f5" };
 const t = (text: string, color = C.text, weight = 500): Run => ({ text, color, weight });
@@ -28,40 +36,31 @@ const wrap = (s: string, n = 78): string[] => {
 
 const app = document.querySelector<HTMLDivElement>("#app")!;
 
-const HELP: [string, string][] = [
-  ["whoami", "who I am, briefly"],
-  ["consult", "the free 1-hour session"],
-  ["work", "what I've built"],
-  ["sensors", "sensors, methods, systems"],
-  ["now", "what I'm up to"],
-  ["why", "what I'm actually betting on"],
-  ["irl", "life away from the screen"],
-  ["blog", "notes — Ground Truth"],
-  ["contact", "how to reach me"],
-  ["clear", "clear the screen"],
+// Command names stay English in every language — they read as shell commands. Only their
+// descriptions and output are localized.
+const CHIP_CMDS: ChipCommand[] = [
+  "whoami", "consult", "work", "sensors", "now", "why", "irl", "blog", "contact", "clear",
 ];
-
-// every command becomes a chip (skip the ones needing an argument).
-const CHIP_CMDS = HELP.map(([c]) => c).filter((c) => !c.includes(" "));
+const HELP: [string, string][] = CHIP_CMDS.map((cmd) => [cmd, c.ui.helpDesc[cmd]]);
 
 app.innerHTML = `
-  <div class="term" role="application" aria-label="Interactive terminal">
+  <div class="term" role="application" aria-label="${esc(c.ui.termAria)}">
     <div class="bar">
       <span class="dots"><i></i><i></i><i></i></span>
       <span class="title">${esc(profile.host)}: ~</span>
       <span class="spacer"></span>
-      <a class="bar-link" href="mailto:${esc(profile.email)}">say hi</a>
+      <a class="bar-link" href="mailto:${esc(profile.email)}">${esc(c.ui.sayHi)}</a>
     </div>
-    <canvas id="banner" aria-label="${esc(profile.name)} — ${esc(profile.tagline)}"></canvas>
+    <canvas id="banner" aria-label="${esc(profile.name)} — ${esc(c.tagline)}"></canvas>
     <div class="screen" id="screen"></div>
-    <div class="chips" id="chips" aria-label="command suggestions">
+    <div class="chips" id="chips" aria-label="${esc(c.ui.chipsAria)}">
       ${CHIP_CMDS
-        .map((c) => `<button data-cmd="${c}"><span class="chips-caret">›</span>${c}</button>`)
+        .map((x) => `<button data-cmd="${x}"><span class="chips-caret">›</span>${x}</button>`)
         .join("")}
     </div>
-    <div class="postview" id="postview" role="dialog" aria-label="Note" hidden>
+    <div class="postview" id="postview" role="dialog" aria-label="${esc(c.ui.noteAria)}" hidden>
       <div class="postbar">
-        <button class="postback" id="postback"><span class="chips-caret">‹</span>back to terminal</button>
+        <button class="postback" id="postback"><span class="chips-caret">‹</span>${esc(c.ui.backToTerminal)}</button>
       </div>
       <article class="postbody" id="postbody"></article>
     </div>
@@ -74,61 +73,68 @@ const postbody = document.getElementById("postbody") as HTMLElement;
 // interactive header — assembled from a point cloud, scatters under the cursor (also PreTeXt)
 createGlyphField(document.getElementById("banner") as HTMLCanvasElement, [
   { text: profile.name, weight: 700, size: 42, color: C.name },
-  { text: profile.role, weight: 500, size: 15, color: C.green },
+  { text: c.role, weight: 500, size: 15, color: C.green },
 ]);
 
-const term = new Terminal(screen, (c) => run(c));
+const term = new Terminal(screen, (x) => run(x));
 
 const commands: Record<string, (args: string[]) => Output | void> = {
-  whoami: () => lines(whoami),
-  now: () => lines(now),
-  irl: () => lines(irl),
-  why: () => lines(wrap(why.join(" ")), C.text),
+  whoami: () => lines(c.whoami),
+  now: () => lines(c.now),
+  irl: () => lines(c.irl),
+  why: () => lines(wrap(c.why.join(" ")), C.text),
   consult: () => [
-    [t("# " + consult.heading, C.green)],
-    ...consult.body.flatMap((l): Paragraph[] => (l === "" ? [[t("")]] : [[t(l)]])),
-    [t(""), ],
+    [t("# " + c.consult.heading, C.green)],
+    ...c.consult.body.flatMap((l): Paragraph[] => (l === "" ? [[t("")]] : [[t(l)]])),
+    [t("")],
     [t("→ "), link(profile.email, "mailto:" + profile.email)],
-    [t("→ "), link("linkedin.com/in/ilmariv", profile.linkedin)],
+    [t("→ "), link(profile.linkedinLabel, profile.linkedin)],
   ],
   work: () => [
-    ...work.flatMap((w): Paragraph[] => [
+    ...c.work.flatMap((w): Paragraph[] => [
       [t("• " + w.title, C.green), ...(w.tag ? [t("  (" + w.tag + ")", C.dim)] : [])],
       ...wrap(w.body).map((l): Paragraph => [t("  " + l, C.text)]),
       ...(w.url && w.label ? [[t("  "), link("[" + w.label + "]", w.url)] as Paragraph] : []),
       [t("")],
     ]),
-    [t("Also in production:", C.dim)],
-    ...alsoShipped.flatMap((s) => wrap(s, 76).map((l, i): Paragraph => [t((i ? "    " : "  • ") + l, C.dim)])),
+    [t(c.ui.alsoInProduction, C.dim)],
+    ...c.alsoShipped.flatMap((s) => wrap(s, 76).map((l, i): Paragraph => [t((i ? "    " : "  • ") + l, C.dim)])),
     [t("")],
-    [t("Side projects — ", C.dim), cmdlink("projects", "projects")],
+    [t(c.ui.sideProjects + " — ", C.dim), cmdlink("projects", "projects")],
   ],
-  projects: () => projects.map((w): Paragraph => [t("• " + w.line + " "), link("[" + w.label + "]", w.url)]),
+  projects: () => c.projects.map((w): Paragraph => [t("• " + w.line + " "), link("[" + w.label + "]", w.url)]),
   sensors: () =>
-    capabilities.flatMap((c): Paragraph[] => [
-      [t(c.label, C.green)],
-      ...wrap(c.items).map((l): Paragraph => [t("  " + l)]),
+    c.capabilities.flatMap((x): Paragraph[] => [
+      [t(x.label, C.green)],
+      ...wrap(x.items).map((l): Paragraph => [t("  " + l)]),
     ]),
-  blog: () => [
-    [t("# Ground Truth — half-formed thoughts, sharpened in public", C.dim)],
-    ...posts.map((p): Paragraph => [cmdlink("• " + p.title, "read " + p.slug), t("  — " + p.date, C.dim)]),
-    [t("tap a note to open it.", C.dim)],
-  ],
+  blog: () =>
+    c.posts.length
+      ? [
+          [t(c.ui.blogHeader, C.dim)],
+          ...c.posts.map((p): Paragraph => [cmdlink("• " + p.title, "read " + p.slug), t("  — " + p.date, C.dim)]),
+          [t(c.ui.tapNote, C.dim)],
+        ]
+      : [
+          [t(c.ui.blogHeader, C.dim)],
+          [t(c.ui.blogElsewhere, C.dim)],
+          [link(URLS[alt], PATHS[alt])],
+        ],
   read: (args) => {
     openPost(args[0]);
   },
   contact: () => [
-    [t("Best way to reach me is email:", C.dim)],
+    [t(c.ui.bestWayEmail, C.dim)],
     [link(profile.email, "mailto:" + profile.email)],
-    [link("linkedin.com/in/ilmariv", profile.linkedin)],
-    [link("github.com/ilmari99", profile.github)],
-    [t(profile.location, C.dim)],
+    [link(profile.linkedinLabel, profile.linkedin)],
+    [link(profile.githubLabel, profile.github)],
+    [t(c.schema.locality, C.dim)],
   ],
-  ls: () => [[t(HELP.map(([c]) => c.split(" ")[0]).join("  "), C.dim)]],
-  help: () => HELP.map(([c, d]): Paragraph => [cmdlink(c.padEnd(10), c), t(" " + d, C.dim)]),
+  ls: () => [[t(HELP.map(([x]) => x.split(" ")[0]).join("  "), C.dim)]],
+  help: () => HELP.map(([x, d]): Paragraph => [cmdlink(x.padEnd(10), x), t(" " + d, C.dim)]),
   clear: () => term.clear(),
-  cv: () => [[t("résumé lives on my "), link("LinkedIn", profile.linkedin), t(" for now.")]],
-  sudo: () => [[t("Nice try. If you want to escalate my privileges, "), link("just ask", "mailto:" + profile.email), t(".")]],
+  cv: () => [[t(c.ui.cv.before), link(c.ui.cv.link, profile.linkedin), t(c.ui.cv.after)]],
+  sudo: () => [[t(c.ui.sudo.before), link(c.ui.sudo.link, "mailto:" + profile.email), t(c.ui.sudo.after)]],
 };
 
 // a few aliases so the obvious guesses land somewhere
@@ -143,7 +149,7 @@ function run(raw: string) {
   const [name, ...args] = cmd.split(/\s+/);
   const fn = commands[name.toLowerCase()];
   if (!fn) {
-    term.print([[t("command not found: " + name, C.err)]]);
+    term.print([[t(c.ui.commandNotFound + name, C.err)]]);
     return;
   }
   const out = fn(args);
@@ -152,9 +158,9 @@ function run(raw: string) {
 
 // group body lines (blank line = paragraph break) and render the note in its own view
 function openPost(slug: string) {
-  const p = posts.find((x) => x.slug === slug);
+  const p = c.posts.find((x) => x.slug === slug);
   if (!p) {
-    term.print([[t("no such note: " + (slug || ""), C.err), t("  — try ", C.dim), cmdlink("blog", "blog")]]);
+    term.print([[t(c.ui.noSuchNote + (slug || ""), C.err), t(c.ui.tryCmd, C.dim), cmdlink("blog", "blog")]]);
     return;
   }
   const out: string[] = [];
@@ -184,6 +190,5 @@ document.getElementById("chips")!.addEventListener("click", (e) => {
 });
 
 // boot
-term.print([[t("// Computer vision and sensor systems for manufacturers. Helsinki.", C.dim)]], { instant: true });
-term.print([[t("// Tap a command, or just scroll — everything is written out below.", C.dim)]], { instant: true });
+for (const l of c.ui.boot) term.print([[t(l, C.dim)]], { instant: true });
 run("whoami");
