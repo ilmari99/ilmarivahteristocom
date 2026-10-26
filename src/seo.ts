@@ -6,7 +6,7 @@
 // content rather than a replacement for it.
 
 import {
-  profile, URLS, PATHS, SECTION_IDS, other, type Content, type Link, type Locale, type Row,
+  profile, ANALYTICS, URLS, PATHS, SECTION_IDS, other, type Content, type Link, type Locale, type Row,
 } from "./content";
 
 const esc = (s: string) =>
@@ -77,7 +77,8 @@ export function siteHtml(c: Content): string {
         `${a(profile.linkedin, profile.linkedinLabel)}` +
         `${a(profile.github, profile.githubLabel)}` +
         `${a(profile.scholar, profile.scholarLabel)}` +
-        `${a(profile.cv, c.ui.cv)}</p>`
+        `${a(profile.cv, c.ui.cv)}</p>` +
+        (ANALYTICS.websiteId ? `<p class="fineprint">${esc(c.ui.analyticsNote)}</p>` : "")
     ),
     `</main>`,
   ].join("");
@@ -100,6 +101,10 @@ export function headTags(c: Content): string {
     `<meta property="og:url" content="${esc(url)}" />`,
     `<meta property="og:locale" content="${esc(c.meta.ogLocale)}" />`,
     `<meta name="twitter:card" content="summary" />`,
+    // Analytics, only once configured. data-domains keeps previews and forks from reporting.
+    ...(ANALYTICS.websiteId
+      ? [`<script defer src="${esc(ANALYTICS.script)}" data-website-id="${esc(ANALYTICS.websiteId)}" data-domains="${esc(ANALYTICS.domain)}"></script>`]
+      : []),
   ].join("\n    ");
 }
 

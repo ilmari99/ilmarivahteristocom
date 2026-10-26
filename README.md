@@ -68,6 +68,19 @@ tags are generated from `URLS` in `headTags()`, so they follow automatically.
 There is deliberately **no automatic redirect by `Accept-Language`** — it breaks crawling and
 overrides a deliberate choice. The switcher above the terminal is a plain `<a>`.
 
+## Analytics
+
+[Umami](https://umami.is), cookieless, so no consent banner. Off until
+`ANALYTICS.websiteId` in [`src/content/profile.ts`](src/content/profile.ts) is set; then the
+build adds the script and a one-line note under Contact. It reports only from
+`ilmarivahteristo.com`, so `npm run dev` / `preview` send nothing.
+
+Besides visits and referrers, the page sends `terminal-command`, `terminal-drag`,
+`banner-play`, `section-view` and `link-click` events — listed with their fields in
+[`src/analytics.ts`](src/analytics.ts). To tell where a visitor came from even when the
+browser sends no referrer (a PDF never does), link to the site with `?utm_source=cv`,
+`?utm_source=linkedin`, `?utm_source=github`; Umami's UTM report groups them.
+
 ## Develop / build
 
 ```bash

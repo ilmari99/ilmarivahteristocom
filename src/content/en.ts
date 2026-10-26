@@ -174,6 +174,7 @@ export const en: Content = {
     contact: "Contact",
     emailMe: "email me",
     cv: "CV (PDF)",
+    analyticsNote: "Visits are counted with Umami — no cookies, nothing personal.",
     switchLabel: "Suomeksi",
 
     termAria: "Interactive terminal",

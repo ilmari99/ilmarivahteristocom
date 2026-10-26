@@ -76,6 +76,8 @@ export interface Content {
     emailMe: string;
     /** Label of the résumé download link. */
     cv: string;
+    /** One line under the contact links, shown only while analytics is on. */
+    analyticsNote: string;
     /** Language switcher: what to call the *other* language, in that other language. */
     switchLabel: string;
 

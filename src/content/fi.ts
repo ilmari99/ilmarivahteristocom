@@ -169,6 +169,7 @@ export const fi: Content = {
     contact: "Yhteystiedot",
     emailMe: "lähetä sähköpostia",
     cv: "CV (PDF)",
+    analyticsNote: "Käynnit lasketaan Umamilla — ei evästeitä, ei henkilötietoja.",
     switchLabel: "In English",
 
     termAria: "Interaktiivinen terminaali",

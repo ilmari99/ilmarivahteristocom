@@ -83,7 +83,9 @@ export class Terminal {
 
   constructor(
     private screen: HTMLElement,
-    private onCommand: (cmd: string) => void
+    private onCommand: (cmd: string) => void,
+    /** Optional observers, for analytics: a link opened, letters dragged. */
+    private hooks: { onLink?: (href: string) => void; onDrag?: () => void } = {}
   ) {
     const ro = new ResizeObserver(() => this.relayoutAll());
     ro.observe(screen);
@@ -455,9 +457,13 @@ export class Terminal {
     this.drag = null;
     if (!moved && (g.run.href || g.run.cmd)) {
       if (g.run.cmd) this.onCommand(g.run.cmd);
-      else if (g.run.href!.startsWith("mailto:")) window.location.href = g.run.href!;
-      else window.open(g.run.href!, "_blank", "noopener");
+      else {
+        this.hooks.onLink?.(g.run.href!);
+        if (g.run.href!.startsWith("mailto:")) window.location.href = g.run.href!;
+        else window.open(g.run.href!, "_blank", "noopener");
+      }
     } else {
+      if (moved) this.hooks.onDrag?.();
       block.active = true;
       this.ensureLoop();
     }

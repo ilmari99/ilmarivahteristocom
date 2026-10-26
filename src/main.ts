@@ -1,6 +1,7 @@
 import "./style.css";
 import { createGlyphField } from "./glyphfield";
 import { Terminal, type Run, type Paragraph, type Output } from "./terminal";
+import { track, once, describeLink, trackPageLinks, trackSectionViews } from "./analytics";
 import {
   locales, isLocale, other, profile, PATHS, URLS, SECTION_IDS,
   type ChipCommand, type ExtraCommand, type Content, type Row, type SectionId,
@@ -84,7 +85,21 @@ createGlyphField(document.getElementById("banner") as HTMLCanvasElement, [
   { text: c.role, weight: 500, size: 15, color: C.green },
 ]);
 
-const term = new Terminal(screen, (x) => run(x));
+// Commands run from a link printed in the terminal (`more: why · irl · blog`, `projects`, …).
+const term = new Terminal(
+  screen,
+  (x) => {
+    track("terminal-command", { cmd: x.split(/\s+/)[0], via: "link" });
+    run(x);
+  },
+  {
+    onLink: (href) => {
+      const d = describeLink(href);
+      if (d) track("link-click", { ...d, from: "terminal" });
+    },
+    onDrag: () => once("terminal-drag"),
+  }
+);
 
 const commands: Record<string, (args: string[]) => Output | void> = {
   whoami: () => [
@@ -182,9 +197,16 @@ document.getElementById("postback")!.addEventListener("click", () => {
 document.getElementById("chips")!.addEventListener("click", (e) => {
   const el = (e.target as HTMLElement).closest("[data-cmd]") as HTMLElement | null;
   if (!el) return;
-  run(el.getAttribute("data-cmd")!);
+  const cmd = el.getAttribute("data-cmd")!;
+  track("terminal-command", { cmd, via: "chip" });
+  run(cmd);
 });
 
 // boot
 for (const l of c.ui.boot) term.print([[t(l, C.dim)]], { instant: true });
 run("whoami");
+
+// analytics (src/analytics.ts): the banner, and the written page's sections and links
+document.getElementById("banner")!.addEventListener("pointerdown", () => once("banner-play"));
+trackSectionViews(document.querySelectorAll("#site section"));
+trackPageLinks(document);

@@ -17,6 +17,17 @@ export const profile = {
   cv: "/ilmari-vahteristo-cv.pdf",
 };
 
+/**
+ * Visitor analytics (src/analytics.ts). Nothing loads, and the privacy note is not shown,
+ * until websiteId is set — copy it from the Umami dashboard: Settings → Websites → Edit.
+ */
+export const ANALYTICS = {
+  websiteId: "6189f60c-4d8d-4292-98f0-ff640cc5bd3d",
+  script: "https://cloud.umami.is/script.js",
+  /** Only this host reports, so local previews and forks send nothing. */
+  domain: "ilmarivahteristo.com",
+};
+
 /** Where each language's page lives. Used for canonical, hreflang and the switcher. */
 export const SITE = "https://ilmarivahteristo.com/";
 export const PATHS = { en: "/", fi: "/fi/" } as const;

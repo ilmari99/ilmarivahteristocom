@@ -231,6 +231,7 @@ body::before {
 
 .contact { margin: 0; }
 .contact a { display: inline-block; margin: 0 18px 6px 0; }
+#site .fineprint { color: var(--dim); font-size: 12px; margin: 18px 0 0; }
 
 .chips {
   display: flex;
