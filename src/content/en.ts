@@ -34,7 +34,7 @@ export const en: Content = {
           note: "A team of seven. Worked directly with customers; all four systems are deployed.",
           points: [
             "Multi-camera tracking through occlusions — 5 cm at 6 m",
-            "3D reconstruction of moving vehicles — line cameras, LiDAR, radar",
+            "3D reconstruction of moving vehicles, line cameras + LiDAR + radar — 4 cm",
             "Veneer quality control by laser triangulation — 0.5 mm from over 1 m",
             "OCR on industrial packaging, with majority voting — 99.9 %",
           ],
@@ -47,7 +47,7 @@ export const en: Content = {
       heading: "Leadership",
       rows: [
         { lead: "2021–22", title: "Project Manager · Lateksii, LUT student guild", note: "Led the organizing team and volunteers; events of up to 900 people." },
-        { lead: "2020–21", title: "Peacekeeper · UNIFIL, Lebanon", note: "Squad co-lead; promoted to part-time squad lead, then team co-lead." },
+        { lead: "2020–21", title: "Peacekeeper · UNIFIL, Lebanon", note: "Squad co-lead; promoted to squad lead, then team co-lead." },
       ],
     },
     publications: {
@@ -108,7 +108,7 @@ export const en: Content = {
       rows: [
         { lead: "2025", title: "Junction — won the ElevenLabs challenge", links: [{ label: "demo", url: "https://youtu.be/WhviYsdgZNE" }] },
         { lead: "2024", title: "Junction — top 5 % in peer review", links: [{ label: "demo", url: "https://www.youtube.com/watch?v=jerwB3SQ5Ok" }] },
-        { lead: "2024", title: "Kaggle LLM 20 Questions — 7th of 800" },
+        { lead: "2024", title: "Kaggle LLM 20 Questions — gold medal, 7th of 800" },
         { lead: "2023", title: "Visma coding competition — 1st of 20 teams" },
         { lead: "2022", title: "IndySCC supercomputing — 3rd of 10 universities" },
       ],

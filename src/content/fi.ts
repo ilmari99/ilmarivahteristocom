@@ -43,7 +43,7 @@ export const fi: Content = {
           note: "Seitsemän hengen tiimi. Työskentelin suoraan asiakkaiden kanssa; kaikki neljä järjestelmää ovat käytössä.",
           points: [
             "Monikameraseuranta katvealueiden läpi — 5 cm 6 m:n etäisyydeltä",
-            "Liikkuvien ajoneuvojen 3D-rekonstruktio — viivakamerat, LiDAR, tutka",
+            "Liikkuvien ajoneuvojen 3D-rekonstruktio, viivakamerat + LiDAR + tutka — 4 cm",
             "Viilun laadunvalvonta lasertriangulaatiolla — 0,5 mm yli 1 m:n etäisyydeltä",
             "OCR teollisuuspakkauksiin enemmistöäänestyksellä — 99,9 %",
           ],
@@ -56,7 +56,7 @@ export const fi: Content = {
       heading: "Johtaminen",
       rows: [
         { lead: "2021–22", title: "Projektipäällikkö · Lateksii, LUTin ainejärjestö", note: "Johdin järjestävää tiimiä ja vapaaehtoisia; tapahtumia jopa 900 hengelle." },
-        { lead: "2020–21", title: "Rauhanturvaaja · UNIFIL, Libanon", note: "Ryhmän varajohtaja; ylennetty osa-aikaiseksi ryhmänjohtajaksi ja sitten partion varajohtajaksi." },
+        { lead: "2020–21", title: "Rauhanturvaaja · UNIFIL, Libanon", note: "Ryhmän varajohtaja; ylennetty ryhmänjohtajaksi ja sitten partion varajohtajaksi." },
       ],
     },
     // Paper titles stay in English: that is what they are published as.
@@ -117,7 +117,7 @@ export const fi: Content = {
       rows: [
         { lead: "2025", title: "Junction — ElevenLabsin haasteen voitto", links: [{ label: "demo", url: "https://youtu.be/WhviYsdgZNE" }] },
         { lead: "2024", title: "Junction — vertaisarvioinnin parhaat 5 %", links: [{ label: "demo", url: "https://www.youtube.com/watch?v=jerwB3SQ5Ok" }] },
-        { lead: "2024", title: "Kaggle LLM 20 Questions — 7. / 800" },
+        { lead: "2024", title: "Kaggle LLM 20 Questions — kultamitali, 7. / 800" },
         { lead: "2023", title: "Visman koodauskilpailu — 1. / 20 joukkuetta" },
         { lead: "2022", title: "IndySCC-supertietokonekilpailu — 3. / 10 yliopistoa" },
       ],
