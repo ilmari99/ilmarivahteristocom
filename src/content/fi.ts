@@ -2,158 +2,160 @@ import type { Content } from "./types";
 
 // TARKISTA TÄMÄ / PROOFREAD THIS.
 //
-// Finnish draft by Claude — Ilmari's own sales copy, so it needs his eye before it goes live.
-// Terms deliberately used, because they are what a Finnish plant manager types into Google:
-// konenäkö, konenäkökonsultti (and the spaced "konenäkö konsultti" people actually search),
-// koneoppiminen, tekoäly, laadunvalvonta, automaatio, mittaus, anturit.
+// Finnish draft by Claude, translated from en.ts — it needs Ilmari's eye before it goes live.
+// Terms deliberately used, because they are what a Finnish recruiter types into Google:
+// konenäkö, konenäköinsinööri, koneoppiminen, tekoäly, anturit, 3D-rekonstruktio.
 //
 // Note: `posts` is intentionally empty — the notes stay in English, and the terminal points
-// there instead (ui.blogElsewhere). See src/seo.ts, which drops the section when empty.
+// there instead (ui.blogElsewhere).
 
 export const fi: Content = {
   locale: "fi",
 
   meta: {
-    title: "Ilmari Vahteristo — konenäkökonsultti, Helsinki",
+    title: "Ilmari Vahteristo — koneoppimis- ja konenäköinsinööri",
     description:
-      "Autan suomalaisia yrityksiä ja valmistavaa teollisuutta hyödyntämään konenäköä, " +
-      "antureita ja koneoppimista tuotannossa, automaatiossa ja päätöksenteossa. " +
-      "Helsinki, tapaamiset Uudellamaalla. Maksuton tunnin konsultaatio.",
-    ogTitle: "Ilmari Vahteristo — konenäkö ja anturijärjestelmät teollisuudelle",
+      "Koneoppimis- ja konenäköinsinööri Helsingissä. Reaaliaikaista havainnointia " +
+      "reunalaitteilla kameroiden, LiDARin, tutkan ja laserien avulla, tuotannossa " +
+      "teollisuudessa. Julkaisuja optimoinnista ja laskennallisesta kuvantamisesta. DI, LUT.",
+    ogTitle: "Ilmari Vahteristo — koneoppimis- ja konenäköinsinööri",
     ogDescription:
-      "Konenäkö- ja tekoälykonsultti Helsingissä. Kamerat, LiDAR, tutka ja laserit oikeassa " +
-      "tuotannossa. Maksuton tunnin konsultaatio — tuo ongelma, saat rehellisen vastauksen.",
+      "Havainnointijärjestelmiä oikeaan maailmaan: monikameraseuranta, liikkuvien ajoneuvojen " +
+      "3D-rekonstruktio, lasermittaus, CT-rekonstruktio. Helsinki.",
     ogLocale: "fi_FI",
   },
 
-  headline: "konenäkö ja anturijärjestelmät teollisuudelle",
-  role: "Konenäkö- ja tekoälykonsultti",
+  role: "Koneoppimis- ja konenäköinsinööri",
   tagline: "Opetan koneet näkemään.",
+  intro:
+    "Rakennan havainnointijärjestelmiä, jotka toimivat oikeassa maailmassa: kamerat, LiDAR, " +
+    "tutka ja laserit reunalaitteilla tehtaissa ja raskaassa teollisuudessa.",
+  availability: "Avoin konenäön ja soveltavan koneoppimisen työtehtäville · Helsinki",
 
-  intro: [
-    "Autan suomalaisia yrityksiä ja valmistavaa teollisuutta — kokoon katsomatta — hyödyntämään",
-    "kameroita, antureita ja koneoppimista tuotannossa, automaatiossa, päätöksenteossa ja",
-    "tiedonkeruussa. Toimin Helsingistä käsin ja tapaan mieluiten paikan päällä Uudellamaalla.",
-    "Työkielinä suomi ja englanti.",
-  ],
-
-  consult: {
-    heading: "Maksuton tunnin konsultaatio",
-    body: [
-      "Tuo mukanasi ongelma tai idea. Käymme läpi, miten se olisi ratkaistavissa tekoälyn,",
-      "koneoppimisen ja konenäön keinoin, mitä se vaatisi datalta ja laitteistolta, ja mikä",
-      "tarkkuus sekä mitkä kompromissit ovat realistisia.",
-      "",
-      "Maksuton eikä sido mihinkään — tapaan mieluiten paikan päällä Uudellamaalla. Jos päätät,",
-      "että ongelma kannattaa ratkaista, voin auttaa ratkaisemaan sen tai auttaa löytämään",
-      "jonkun muun, joka pystyy siihen.",
-      "",
-      "Jos uskot ongelman olevan yhteinen koko toimialalle tai siinä piilevän skaalautuvaa",
-      "liiketoimintaa, kiinnostun vain enemmän.",
-    ],
-    heroCta: "Mitä maksuton tunti sisältää",
+  sections: {
+    experience: {
+      heading: "Työkokemus",
+      rows: [
+        {
+          lead: "2025–26",
+          title: "Ohjelmistoinsinööri, ML / CV · Virelabs",
+          note: "Reaaliaikaista havainnointia raskaalle teollisuudelle, reunalaitteilla.",
+          points: [
+            "Monikameraseuranta katvealueiden läpi — 5 cm 6 m:n etäisyydeltä",
+            "Liikkuvien ajoneuvojen 3D-rekonstruktio — viivakamerat, LiDAR, tutka",
+            "Viilun laadunvalvonta lasertriangulaatiolla — 0,5 mm yli 1 m:n etäisyydeltä",
+            "OCR teollisuuspakkauksiin enemmistöäänestyksellä — 99,9 %",
+          ],
+        },
+        { lead: "2024", title: "Tutkimusavustaja · LUT-yliopisto", note: "Syväoppimista rajoitetun kulman CT-rekonstruktioon." },
+        { lead: "2024–25", title: "Freelance-datatieteilijä", note: "Ravintolan asiakasmäärän ennustaminen ruokalistasta ruokahävikin vähentämiseksi." },
+        { lead: "2020–21", title: "Rauhanturvaaja · UNIFIL, Libanon", note: "Ryhmän varajohtaja, sitten ryhmänjohtaja ja partion varajohtaja." },
+      ],
+    },
+    // Paper titles stay in English: that is what they are published as.
+    publications: {
+      heading: "Julkaisut",
+      rows: [
+        {
+          lead: "2026",
+          title: "New spherical codes by tuning an annealing solver",
+          note: "Preprint, ainoa kirjoittaja. Uusi paras tunnettu ratkaisu 15 %:lle 29 670 tapauksesta.",
+          links: [
+            { label: "arXiv", url: "https://arxiv.org/abs/2610.19988" },
+            { label: "koodi", url: "https://github.com/ilmari99/tammes_BLASE" },
+          ],
+        },
+        {
+          lead: "2025",
+          title: "Data-efficient limited-angle CT using deep priors and regularization",
+          note: "SCIA (IEEE), ensimmäinen kirjoittaja.",
+          links: [{ label: "arXiv", url: "https://arxiv.org/abs/2502.12293" }],
+        },
+        {
+          lead: "2025",
+          title: "Stationary LiDAR, moving target: pure LiDAR solution for motion estimation and 3D reconstruction",
+          note: "Diplomityö, LUT-yliopisto, yhteistyössä Virelabsin kanssa.",
+          links: [{ label: "pdf", url: "https://urn.fi/URN:NBN:fi-fe2025082784786" }],
+        },
+        {
+          lead: "2023",
+          title: "Man vs machine: beating humans in a multiplayer card game without lookahead",
+          note: "Kandidaatintyö, LUT-yliopisto.",
+          links: [{ label: "pdf", url: "https://urn.fi/URN:NBN:fi-fe2023051644576" }],
+        },
+      ],
+    },
+    projects: {
+      heading: "Projektit",
+      rows: [
+        {
+          lead: "Moska",
+          title: "Korttipelin tekoäly, joka voittaa parhaat ihmispelaajat",
+          note: "Nyt myös testi siitä, miten kielimallit pelaavat peliä, jota ne eivät ole nähneet.",
+          links: [{ label: "moska.eu", url: "https://moska.eu/" }],
+        },
+        {
+          lead: "PolyGate",
+          title: "MCP-palvelin LLM-agenteille ennustemarkkinoilla",
+          links: [{ label: "github", url: "https://github.com/ilmari99/polygate" }],
+        },
+      ],
+    },
+    competitions: {
+      heading: "Kilpailut",
+      rows: [
+        { lead: "2025", title: "Junction — ElevenLabsin haasteen voitto", links: [{ label: "demo", url: "https://youtu.be/WhviYsdgZNE" }] },
+        { lead: "2024", title: "Junction — vertaisarvioinnin parhaat 5 %", links: [{ label: "demo", url: "https://www.youtube.com/watch?v=jerwB3SQ5Ok" }] },
+        { lead: "2024", title: "Kaggle LLM 20 Questions — 7. / 800" },
+        { lead: "2023", title: "Visman koodauskilpailu — 1. / 20 joukkuetta" },
+        { lead: "2022", title: "IndySCC-supertietokonekilpailu — 3. / 10 yliopistoa" },
+      ],
+    },
+    education: {
+      heading: "Koulutus",
+      rows: [
+        { lead: "2025", title: "DI, konenäkö ja hahmontunnistus · LUT-yliopisto", note: "Keskiarvo 4,2 / 5. Vaihto IST Lissabonissa." },
+        { lead: "nyt", title: "Maisteri, robotiikka ja automaatio · Aalto-yliopisto" },
+      ],
+    },
+    skills: {
+      heading: "Osaaminen",
+      rows: [
+        { lead: "Anturit", title: "Kamerat · LiDAR · tutka · lasertriangulaatio · IMU" },
+        { lead: "Menetelmät", title: "Syväoppiminen · 3D-näkö · seuranta · anturifuusio · optimointi" },
+        { lead: "Työkalut", title: "Python · C · Docker · Git · Linux · reunalaskenta · PLC" },
+      ],
+    },
   },
 
-  work: [
-    {
-      title: "Monikameraseuranta katvealueiden läpi",
-      tag: "teollisuus",
-      body:
-        "Reaaliaikainen kohteiden tunnistus ja seuranta monikamerajärjestelmässä, jossa kohteet " +
-        "katoavat toistuvasti esteiden taakse ja ne on tunnistettava uudelleen niiden tullessa " +
-        "taas näkyviin. 3 cm tarkkuus 6 metrin etäisyydeltä, reunalaitteistolla tuotantotiloissa.",
-    },
-    {
-      title: "Liikkuvien ajoneuvojen 3D-rekonstruktio",
-      tag: "teollisuus",
-      body:
-        "Jäykkä, liikekompensoitu 3D-rekonstruktio rekoista niiden ajaessa ohi — huomioiden " +
-        "ajoneuvon oman kiertymisen ja kiihtyvyyden — LiDARin ja tutkan avulla. Noin 4 cm " +
-        "tarkkuus tuotannossa.",
-      label: "diplomityö",
-      url: "https://lutpub.lut.fi/handle/10024/170362",
-    },
-    {
-      title: "Tietokonetomografiakuvien rekonstruktio röntgendatasta",
-      tag: "akateeminen",
-      body:
-        "Datatehokas rajoitetun kulman tietokonetomografia: käyttökelpoisia rekonstruktioita " +
-        "huomattavasti pienemmällä määrällä röntgenprojektioita kuin tavallinen kuvaus vaatii. " +
-        "Ensimmäisenä kirjoittajana SCIA-konferenssissa (IEEE).",
-      label: "arXiv",
-      url: "https://arxiv.org/abs/2502.12293",
-    },
-    {
-      title: "Kilpailut ja hackathonit",
-      body:
-        "Junction 2025 — voitto ElevenLabsin ääni-AI-haasteessa. Kaggle LLM 20 Questions — " +
-        "7. sija 800:sta. IndySCC-supertietokonekilpailu — 3. sija kymmenestä yliopistosta " +
-        "maailmanlaajuisesti. Google Foobar — yhdeksän tehtävää, mikä johti Googlen haastatteluun.",
-    },
-  ],
-
-  alsoShipped: [
-    "Lankun paksuuden ja pituuden mittaus lasertriangulaatiolla — alle 0,5 mm tarkkuus.",
-    "OCR heikkolaatuisille pakkausmerkinnöille enemmistöäänestyksellä — yli 99,5 % tarkkuus.",
-  ],
-
-  projects: [
-    { line: "PolyGate — MCP-palvelin, jonka avulla LLM-agentit tutkivat ennustemarkkinoita ja käyvät niillä kauppaa.", label: "github", url: "https://github.com/ilmari99/polygate" },
-    { line: "BLASE — globaali optimoija pallokoodeille; paransi 1 550 tunnettua ennätystä (20,7 %).", label: "github", url: "https://github.com/ilmari99/tammes_BLASE" },
-    { line: "Moska — vahvistusoppimisagentti, joka voittaa parhaat ihmispelaajat suomalaisessa korttipelissä.", label: "opinnäyte", url: "https://urn.fi/URN:NBN:fi-fe2023051644576" },
-  ],
-
-  capabilities: [
-    { label: "Anturit", items: "LiDAR · tutka · lasertriangulaatio · kamerat · IMU · ääni" },
-    { label: "Menetelmät", items: "Syväoppiminen · konenäkö · optimointi · monianturijärjestelmät · tekoäly- ja LLM-työkalut" },
-    { label: "Järjestelmät", items: "Reunalaskenta · reaaliaikainen päättely · PLC · Python · C · Docker · Git · Linux" },
-  ],
-
-  why: [
-    "Uskon, että runsaan digitaalisen älyn aikakausi on alkamassa, ja kiinnostava ongelma on",
-    "muuntaa se taloudellisesti hyödylliseksi työksi: havainnoida todellista maailmaa antureilla,",
-    "muodostaa siitä digitaalinen esitys ja antaa ohjelmistojen ja laitteiden tehdä sillä jotain",
-    "arvokasta. Vain asiakas tietää, mikä on hänelle arvokasta — siksi aloitan kuuntelemalla",
-    "enkä ehdottamalla mallia.",
-  ],
-
   whoami: [
-    "Hei — olen Ilmari, konenäkö- ja tekoälykonsultti Helsingissä.",
-    "Rakennan havainnointijärjestelmiä teollisuudelle: kamerat, LiDAR, tutka ja laserit,",
-    "reaaliajassa tuotantotiloissa. Diplomi-insinööri laskennallisesta matematiikasta;",
-    "toinen maisterintutkinto robotiikasta kesken Aallossa.",
-    "Yrittäjähenkinen, ja otan parhaillaan vastaan toimeksiantoja.",
+    { lead: "nimi", title: "Ilmari Vahteristo" },
+    { lead: "rooli", title: "Koneoppimis- ja konenäköinsinööri" },
+    { lead: "rakentaa", title: "Havainnointia reunalaitteilla — kamerat, LiDAR, tutka, laserit" },
+    { lead: "tutkinto", title: "DI, LUT · nyt maisteri robotiikasta, Aalto" },
+    { lead: "sijainti", title: "Helsinki" },
+    { lead: "tilanne", title: "Avoin konenäön ja soveltavan koneoppimisen työtehtäville" },
   ],
 
-  now: [
-    "→ Konsultoin konenäössä ja anturijärjestelmissä suomalaiselle valmistavalle teollisuudelle.",
-    "→ Tarjoan maksuttomia tunnin tapaamisia Uudellamaalla — tuo ongelma tai idea.",
-    "→ Viimeistelen robotiikan maisterintutkintoa Aallossa.",
-  ],
+  why:
+    "Uskon, että runsaan digitaalisen älyn aikakausi on alkamassa, ja kiinnostava ongelma on " +
+    "muuntaa se taloudellisesti hyödylliseksi työksi: havainnoida todellista maailmaa antureilla, " +
+    "muodostaa siitä digitaalinen esitys ja antaa ohjelmistojen ja laitteiden tehdä sillä jotain " +
+    "arvokasta.",
 
   irl: [
-    "Ruudun ulkopuolella:",
-    "• Jääkiekkoa, satunnainen jalkapallopeli ja suunnistusta.",
-    "• Pokeri-iltoja ja aikaa ystävien kanssa.",
-    "• Äänikirjoja pitkillä automatkoilla, ja mikä tahansa syy päästä ulos.",
-    "• Järjestän mielelläni tapahtumia ystäville.",
-    "• Sotilasjohtamiskokemusta rauhanturvaoperaatiosta Etelä-Libanonissa.",
+    "Jääkiekkoa, satunnainen jalkapallopeli ja suunnistusta.",
+    "Pokeri-iltoja, aikaa ystävien kanssa ja tapahtumien järjestämistä heille.",
+    "Äänikirjoja pitkillä automatkoilla, ja mikä tahansa syy päästä ulos.",
   ],
 
   // Intentionally empty — see the file header.
   posts: [],
 
   ui: {
-    sections: {
-      work: "Työt",
-      capabilities: "Anturit ja menetelmät",
-      why: "Miksi",
-      writing: "Ground Truth — muistiinpanot",
-      contact: "Yhteystiedot",
-    },
-    alsoInProduction: "Myös tuotannossa:",
-    sideProjects: "Omat projektit",
-    messageOnLinkedIn: "viesti LinkedInissä",
+    contact: "Yhteystiedot",
+    emailMe: "lähetä sähköpostia",
+    cv: "CV (PDF)",
     switchLabel: "In English",
 
     termAria: "Interaktiivinen terminaali",
@@ -161,43 +163,45 @@ export const fi: Content = {
     noteAria: "Muistiinpano",
     sayHi: "moikkaa",
     backToTerminal: "takaisin terminaaliin",
-    bestWayEmail: "Parhaiten tavoitat minut sähköpostilla:",
+    more: "lisää: ",
     blogHeader: "# Ground Truth — puolivalmiita ajatuksia, teroitettuna julkisesti",
     tapNote: "avaa muistiinpano napauttamalla.",
     blogElsewhere: "Muistiinpanot ovat englanniksi — lue ne englanninkieliseltä sivulta.",
     commandNotFound: "komentoa ei löydy: ",
     noSuchNote: "muistiinpanoa ei löydy: ",
     tryCmd: "  — kokeile ",
-    cv: { before: "ansioluettelo löytyy toistaiseksi ", link: "LinkedInistä", after: "." },
     sudo: {
       before: "Hyvä yritys. Jos haluat korottaa oikeuksiani, ",
       link: "kysy vain",
       after: ".",
     },
     boot: [
-      "// Konenäkö ja anturijärjestelmät teollisuudelle. Helsinki.",
-      "// Napauta komentoa tai vieritä alas — kaikki on kirjoitettu auki alle.",
+      "// Koneoppimis- ja konenäköinsinööri. Helsinki.",
+      "// Napauta komentoa tai vieritä alas.",
     ],
     helpDesc: {
       whoami: "kuka olen, lyhyesti",
-      consult: "maksuton tunnin tapaaminen",
-      work: "mitä olen rakentanut",
-      sensors: "anturit, menetelmät, järjestelmät",
-      now: "mitä teen juuri nyt",
-      why: "mihin oikeasti uskon",
-      irl: "elämä ruudun ulkopuolella",
-      blog: "muistiinpanot — Ground Truth",
+      experience: "roolit ja tulokset",
+      publications: "artikkelit ja opinnäytteet",
+      projects: "omat projektit",
+      competitions: "kilpailut",
+      education: "tutkinnot",
+      skills: "anturit, menetelmät, työkalut",
+      cv: "lataa CV",
       contact: "miten tavoitat minut",
       clear: "tyhjennä ruutu",
+      why: "mihin uskon",
+      irl: "elämä ruudun ulkopuolella",
+      blog: "muistiinpanot — Ground Truth",
     },
   },
 
   schema: {
     knowsAbout: [
-      "Konenäkö", "Koneoppiminen", "Tekoäly", "LiDAR", "Tutka", "Lasertriangulaatio",
-      "Anturifuusio", "Reunalaskenta", "Teollisuusautomaatio", "Python", "C",
+      "Konenäkö", "Koneoppiminen", "Syväoppiminen", "3D-rekonstruktio", "Kohteiden seuranta",
+      "LiDAR", "Tutka", "Lasertriangulaatio", "Anturifuusio", "Reunalaskenta",
+      "Numeerinen optimointi", "Tietokonetomografia", "Python", "C",
     ],
-    areaServed: "Uusimaa, Suomi",
     locality: "Helsinki",
   },
 };

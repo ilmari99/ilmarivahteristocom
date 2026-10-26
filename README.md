@@ -1,11 +1,11 @@
 # ilmarivahteristo.com
 
-The site of a computer vision and AI/ML consultant. Two languages: English at `/`, Finnish
-at `/fi/`.
+The personal site of a machine learning and computer vision engineer. Two languages: English
+at `/`, Finnish at `/fi/`.
 
-Each page is a written document — heading, the offer, work, sensors and methods, contact —
-with an interactive terminal as the hero above it. Type a command (`whoami`, `consult`,
-`work`, `sensors`, `help`) or tap a chip.
+Each page is a written document — summary, experience, publications, projects, competitions,
+education, skills, contact — with an interactive terminal as the hero above it. Tap a chip
+(`whoami`, `experience`, `publications`, `cv`, …) to print a section.
 
 ## The text is real HTML
 
@@ -44,6 +44,7 @@ Everything is under [`src/content/`](src/content/):
 | `types.ts` | the `Content` interface — **the contract both languages must satisfy** |
 | `en.ts` / `fi.ts` | all copy, including chrome (headings, buttons, boot lines, help text) |
 | `profile.ts` | language-neutral facts: name, email, links, and the site URLs |
+| `public/ilmari-vahteristo-cv.pdf` | the downloadable CV — replace the file, keep the name |
 
 A field missing from one language is a **compile error**, so a translation cannot silently
 fall back to English. That is the whole point of the split — add a field to `types.ts` and

@@ -2,8 +2,8 @@ import "./style.css";
 import { createGlyphField } from "./glyphfield";
 import { Terminal, type Run, type Paragraph, type Output } from "./terminal";
 import {
-  locales, isLocale, other, profile, PATHS, URLS,
-  type ChipCommand, type Content,
+  locales, isLocale, other, profile, PATHS, URLS, SECTION_IDS,
+  type ChipCommand, type ExtraCommand, type Content, type Row, type SectionId,
 } from "./content";
 
 const esc = (s: string) =>
@@ -20,28 +20,36 @@ const C = { text: "#e7e7e9", dim: "#6b6f76", green: "#7dd3a0", acc: "#4ade80", e
 const t = (text: string, color = C.text, weight = 500): Run => ({ text, color, weight });
 const link = (text: string, href: string): Run => ({ text, href, color: C.acc });
 const cmdlink = (text: string, cmd: string): Run => ({ text, cmd, color: C.acc });
-const lines = (arr: string[], color = C.text): Output => arr.map((l) => [t(l, color)]);
 
-// wrap a long sentence into terminal-width-ish lines so the canvas isn't one endless run
-const wrap = (s: string, n = 78): string[] => {
-  const out: string[] = [];
-  let line = "";
-  for (const w of s.split(/\s+/)) {
-    if (line && (line + " " + w).length > n) { out.push(line); line = w; }
-    else line = line ? line + " " + w : w;
-  }
-  if (line) out.push(line);
-  return out;
+// Never pre-wrap: each Paragraph is wrapped by PreTeXt to the terminal's actual width, so a
+// hard break in the text would show up as a ragged line on any narrower screen.
+
+// A section as the page shows it: dim lead, the line in green, its links; the note and any
+// results under it. Leads are padded to the section's longest, so the lines start together —
+// with no-break spaces, because PreTeXt collapses runs of ordinary ones like CSS does.
+const rowsOut = (rs: Row[]): Output => {
+  const pad = Math.max(0, ...rs.map((r) => (r.lead ?? "").length)) + 2;
+  const spaced = rs.some((r) => r.note || r.points);
+  return rs.flatMap((r): Paragraph[] => [
+    [
+      ...(pad > 2 ? [t((r.lead ?? "").padEnd(pad, "\u00a0"), C.dim)] : []),
+      t(r.title, C.green),
+      ...(r.links ?? []).flatMap((l) => [t(" "), link("[" + l.label + "]", l.url)]),
+    ],
+    ...(r.note ? [[t(r.note)] as Paragraph] : []),
+    ...(r.points ?? []).map((x): Paragraph => [t("• " + x, C.dim)]),
+    ...(spaced ? [[t("")] as Paragraph] : []),
+  ]);
 };
 
 const app = document.querySelector<HTMLDivElement>("#app")!;
 
 // Command names stay English in every language — they read as shell commands. Only their
 // descriptions and output are localized.
-const CHIP_CMDS: ChipCommand[] = [
-  "whoami", "consult", "work", "sensors", "now", "why", "irl", "blog", "contact", "clear",
-];
-const HELP: [string, string][] = CHIP_CMDS.map((cmd) => [cmd, c.ui.helpDesc[cmd]]);
+const CHIP_CMDS: ChipCommand[] = ["whoami", ...SECTION_IDS, "cv", "contact", "clear"];
+// No chip: reached from the links at the end of `whoami`, and listed by `help`.
+const EXTRA_CMDS: ExtraCommand[] = ["why", "irl", "blog"];
+const HELP: [string, string][] = [...CHIP_CMDS, ...EXTRA_CMDS].map((cmd) => [cmd, c.ui.helpDesc[cmd]]);
 
 app.innerHTML = `
   <div class="term" role="application" aria-label="${esc(c.ui.termAria)}">
@@ -79,35 +87,16 @@ createGlyphField(document.getElementById("banner") as HTMLCanvasElement, [
 const term = new Terminal(screen, (x) => run(x));
 
 const commands: Record<string, (args: string[]) => Output | void> = {
-  whoami: () => lines(c.whoami),
-  now: () => lines(c.now),
-  irl: () => lines(c.irl),
-  why: () => lines(wrap(c.why.join(" ")), C.text),
-  consult: () => [
-    [t("# " + c.consult.heading, C.green)],
-    ...c.consult.body.flatMap((l): Paragraph[] => (l === "" ? [[t("")]] : [[t(l)]])),
+  whoami: () => [
+    ...rowsOut(c.whoami),
     [t("")],
-    [t("→ "), link(profile.email, "mailto:" + profile.email)],
-    [t("→ "), link(profile.linkedinLabel, profile.linkedin)],
+    [t(c.ui.more, C.dim), ...EXTRA_CMDS.flatMap((x, i) => [...(i ? [t(" · ", C.dim)] : []), cmdlink(x, x)])],
   ],
-  work: () => [
-    ...c.work.flatMap((w): Paragraph[] => [
-      [t("• " + w.title, C.green), ...(w.tag ? [t("  (" + w.tag + ")", C.dim)] : [])],
-      ...wrap(w.body).map((l): Paragraph => [t("  " + l, C.text)]),
-      ...(w.url && w.label ? [[t("  "), link("[" + w.label + "]", w.url)] as Paragraph] : []),
-      [t("")],
-    ]),
-    [t(c.ui.alsoInProduction, C.dim)],
-    ...c.alsoShipped.flatMap((s) => wrap(s, 76).map((l, i): Paragraph => [t((i ? "    " : "  • ") + l, C.dim)])),
-    [t("")],
-    [t(c.ui.sideProjects + " — ", C.dim), cmdlink("projects", "projects")],
-  ],
-  projects: () => c.projects.map((w): Paragraph => [t("• " + w.line + " "), link("[" + w.label + "]", w.url)]),
-  sensors: () =>
-    c.capabilities.flatMap((x): Paragraph[] => [
-      [t(x.label, C.green)],
-      ...wrap(x.items).map((l): Paragraph => [t("  " + l)]),
-    ]),
+  why: () => [[t(c.why)]],
+  irl: () => c.irl.map((l): Paragraph => [t("• " + l)]),
+  ...Object.fromEntries(
+    SECTION_IDS.map((id: SectionId) => [id, () => rowsOut(c.sections[id].rows)])
+  ),
   blog: () =>
     c.posts.length
       ? [
@@ -123,23 +112,29 @@ const commands: Record<string, (args: string[]) => Output | void> = {
   read: (args) => {
     openPost(args[0]);
   },
+  cv: () => [[t("→ "), link(c.ui.cv, profile.cv)]],
   contact: () => [
-    [t(c.ui.bestWayEmail, C.dim)],
     [link(profile.email, "mailto:" + profile.email)],
     [link(profile.linkedinLabel, profile.linkedin)],
     [link(profile.githubLabel, profile.github)],
+    [link(c.ui.cv, profile.cv)],
     [t(c.schema.locality, C.dim)],
   ],
   ls: () => [[t(HELP.map(([x]) => x.split(" ")[0]).join("  "), C.dim)]],
-  help: () => HELP.map(([x, d]): Paragraph => [cmdlink(x.padEnd(10), x), t(" " + d, C.dim)]),
+  help: () => HELP.map(([x, d]): Paragraph => [cmdlink(x.padEnd(13), x), t(" " + d, C.dim)]),
   clear: () => term.clear(),
-  cv: () => [[t(c.ui.cv.before), link(c.ui.cv.link, profile.linkedin), t(c.ui.cv.after)]],
   sudo: () => [[t(c.ui.sudo.before), link(c.ui.sudo.link, "mailto:" + profile.email), t(c.ui.sudo.after)]],
 };
 
 // a few aliases so the obvious guesses land somewhere
-commands.stack = commands.sensors;
-commands.hire = commands.consult;
+commands.sensors = commands.skills;
+commands.stack = commands.skills;
+commands.resume = commands.cv;
+commands.papers = commands.publications;
+commands.research = commands.publications;
+commands.awards = commands.competitions;
+commands.hire = commands.contact;
+commands.consult = commands.contact;
 commands.email = commands.contact;
 
 function run(raw: string) {

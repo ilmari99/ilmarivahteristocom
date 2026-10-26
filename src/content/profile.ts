@@ -9,6 +9,8 @@ export const profile = {
   linkedin: "https://www.linkedin.com/in/ilmariv/",
   githubLabel: "github.com/ilmari99",
   linkedinLabel: "linkedin.com/in/ilmariv",
+  /** The résumé, served from public/. Replace the file to update it; keep the name. */
+  cv: "/ilmari-vahteristo-cv.pdf",
 };
 
 /** Where each language's page lives. Used for canonical, hreflang and the switcher. */

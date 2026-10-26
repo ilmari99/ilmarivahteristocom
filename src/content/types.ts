@@ -4,19 +4,41 @@
 // field missing from a translation is a compile error rather than an English string quietly
 // surfacing on the Finnish page. Everything language-dependent belongs here — including the
 // chrome (section headings, button labels, boot lines), which is the part that leaks.
+//
+// Prose is stored one string per paragraph, never pre-wrapped: both the page and the
+// terminal wrap to their own width, and a hard break baked into the text shows up as a
+// ragged line on any screen narrower than the one it was wrapped for.
 
 export type Locale = "en" | "fi";
 
-export type Work = { title: string; tag?: string; body: string; label?: string; url?: string };
-export type Project = { line: string; url: string; label: string };
-export type Capability = { label: string; items: string };
+export type Link = { label: string; url: string };
+
+/**
+ * One row of a section: a short dim lead (a year, a label), the line itself, an optional
+ * one-sentence note under it, results under it (a role's), and links. Keep each to a glance.
+ */
+export type Row = { lead?: string; title: string; note?: string; points?: string[]; links?: Link[] };
+
+/**
+ * Section ids, in page order. They are also the terminal commands that print them.
+ *
+ * Every item lives in exactly one section, chosen by what kind of thing it is: a job
+ * (experience — its results listed under it), something published (publications), something
+ * built on my own time (projects), a ranking someone else gave (competitions), a degree
+ * (education). No "selected work" section that repeats them.
+ */
+export const SECTION_IDS = [
+  "experience", "publications", "projects", "competitions", "education", "skills",
+] as const;
+export type SectionId = (typeof SECTION_IDS)[number];
+export type Section = { heading: string; rows: Row[] };
+
 export type Post = { slug: string; title: string; date: string; body: string[] };
 
 // Command names stay English in every language (they read as shell commands, and `whoami`
 // or `clear` need no translation). Only their descriptions and output are localized.
-export type ChipCommand =
-  | "whoami" | "consult" | "work" | "sensors"
-  | "now" | "why" | "irl" | "blog" | "contact" | "clear";
+export type ChipCommand = "whoami" | SectionId | "cv" | "contact" | "clear";
+export type ExtraCommand = "why" | "irl" | "blog";
 
 export interface Content {
   locale: Locale;
@@ -31,37 +53,28 @@ export interface Content {
     ogLocale: string;
   };
 
-  /** The <h1> reads "<name> — <headline>". */
-  headline: string;
-  /** Banner subtitle, and jobTitle in the structured data. */
+  /** Under the name, on the page and in the banner; jobTitle in the structured data. */
   role: string;
   tagline: string;
+  /** One sentence under the role. */
+  intro: string;
+  /** What kind of work I'm open to. */
+  availability: string;
 
-  intro: string[];
-  consult: { heading: string; body: string[]; heroCta: string };
-  work: Work[];
-  alsoShipped: string[];
-  projects: Project[];
-  capabilities: Capability[];
-  why: string[];
-  whoami: string[];
-  now: string[];
+  sections: Record<SectionId, Section>;
+
+  /** Terminal only: a short key/value card. */
+  whoami: Row[];
+  why: string;
   irl: string[];
   posts: Post[];
 
   /** Chrome. Every literal that would otherwise be hardcoded in seo.ts or main.ts. */
   ui: {
-    /** Section headings on the written page. The ids stay English in both languages. */
-    sections: {
-      work: string;
-      capabilities: string;
-      why: string;
-      writing: string;
-      contact: string;
-    };
-    alsoInProduction: string;
-    sideProjects: string;
-    messageOnLinkedIn: string;
+    contact: string;
+    emailMe: string;
+    /** Label of the résumé download link. */
+    cv: string;
     /** Language switcher: what to call the *other* language, in that other language. */
     switchLabel: string;
 
@@ -71,7 +84,8 @@ export interface Content {
     noteAria: string;
     sayHi: string;
     backToTerminal: string;
-    bestWayEmail: string;
+    /** Lead-in to the links for the commands that have no chip. */
+    more: string;
     blogHeader: string;
     tapNote: string;
     /** Shown instead of the note list when this language has no posts of its own. */
@@ -79,16 +93,14 @@ export interface Content {
     commandNotFound: string;
     noSuchNote: string;
     tryCmd: string;
-    cv: { before: string; link: string; after: string };
     sudo: { before: string; link: string; after: string };
     boot: string[];
-    helpDesc: Record<ChipCommand, string>;
+    helpDesc: Record<ChipCommand | ExtraCommand, string>;
   };
 
   /** Language-specific strings for the JSON-LD graph. */
   schema: {
     knowsAbout: string[];
-    areaServed: string;
     locality: string;
   };
 }
