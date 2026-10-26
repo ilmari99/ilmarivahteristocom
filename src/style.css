@@ -99,6 +99,12 @@ body::before {
   scrollbar-width: thin;
   scrollbar-color: #2a2c31 transparent;
 }
+/* Output scrolls up under the banner; fade the top edge so a half-scrolled line reads as
+   "more above" instead of being sliced through. */
+.screen {
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 26px);
+  mask-image: linear-gradient(to bottom, transparent 0, #000 26px);
+}
 .screen::-webkit-scrollbar { width: 8px; }
 .screen::-webkit-scrollbar-thumb { background: #24262b; border-radius: 8px; }
 
@@ -148,6 +154,18 @@ body::before {
   color: #f4f4f5;
   margin: 0 0 14px;
   letter-spacing: -0.01em;
+}
+/* With JS the terminal banner already shows the name and role, right above; showing the
+   <h1> as well reads as a copy-paste slip. It stays in the document — for crawlers, screen
+   readers, and visitors without JS, who get no banner and see it as normal. */
+.js .hero h1 {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
 }
 /* inside the <h1> for crawlers, but read as a subtitle */
 .hero h1 .role {

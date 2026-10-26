@@ -23,12 +23,13 @@ export type Row = { lead?: string; title: string; note?: string; points?: string
  * Section ids, in page order. They are also the terminal commands that print them.
  *
  * Every item lives in exactly one section, chosen by what kind of thing it is: a job
- * (experience — its results listed under it), something published (publications), something
- * built on my own time (projects), a ranking someone else gave (competitions), a degree
- * (education). No "selected work" section that repeats them.
+ * (experience — its results listed under it), leading people outside a job (leadership),
+ * something published (publications), something built on my own time (projects), a ranking
+ * someone else gave (competitions), a degree (education). No "selected work" section that
+ * repeats them.
  */
 export const SECTION_IDS = [
-  "experience", "publications", "projects", "competitions", "education", "skills",
+  "experience", "leadership", "publications", "projects", "competitions", "education", "skills",
 ] as const;
 export type SectionId = (typeof SECTION_IDS)[number];
 export type Section = { heading: string; rows: Row[] };

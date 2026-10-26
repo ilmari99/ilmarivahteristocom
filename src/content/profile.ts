@@ -8,6 +8,10 @@ export const profile = {
   github: "https://github.com/ilmari99",
   linkedin: "https://www.linkedin.com/in/ilmariv/",
   githubLabel: "github.com/ilmari99",
+  scholar: "https://scholar.google.com/citations?user=cN6lZe8AAAAJ",
+  scholarLabel: "Google Scholar",
+  /** The full legal name, as on the CV — so a search for either finds the same person. */
+  fullName: "Esko Ilmari Vahteristo",
   linkedinLabel: "linkedin.com/in/ilmariv",
   /** The résumé, served from public/. Replace the file to update it; keep the name. */
   cv: "/ilmari-vahteristo-cv.pdf",

@@ -117,6 +117,7 @@ const commands: Record<string, (args: string[]) => Output | void> = {
     [link(profile.email, "mailto:" + profile.email)],
     [link(profile.linkedinLabel, profile.linkedin)],
     [link(profile.githubLabel, profile.github)],
+    [link(profile.scholarLabel, profile.scholar)],
     [link(c.ui.cv, profile.cv)],
     [t(c.schema.locality, C.dim)],
   ],

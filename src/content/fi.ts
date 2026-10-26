@@ -13,24 +13,26 @@ export const fi: Content = {
   locale: "fi",
 
   meta: {
-    title: "Ilmari Vahteristo — koneoppimis- ja konenäköinsinööri",
+    title: "Ilmari Vahteristo — konenäkö- ja koneoppimisinsinööri, Helsinki",
     description:
-      "Koneoppimis- ja konenäköinsinööri Helsingissä. Reaaliaikaista havainnointia " +
-      "reunalaitteilla kameroiden, LiDARin, tutkan ja laserien avulla, tuotannossa " +
-      "teollisuudessa. Julkaisuja optimoinnista ja laskennallisesta kuvantamisesta. DI, LUT.",
-    ogTitle: "Ilmari Vahteristo — koneoppimis- ja konenäköinsinööri",
+      "Konenäkö- ja koneoppimisinsinööri Helsingissä, avoin uusille mahdollisuuksille. " +
+      "Reaaliaikaista havainnointia kameroilla, LiDARilla ja tutkalla, käytössä teollisuudessa; " +
+      "julkaisuja laskennallisesta kuvantamisesta ja pallokoodeista.",
+    ogTitle: "Ilmari Vahteristo — konenäkö- ja koneoppimisinsinööri, Helsinki",
     ogDescription:
       "Havainnointijärjestelmiä oikeaan maailmaan: monikameraseuranta, liikkuvien ajoneuvojen " +
       "3D-rekonstruktio, lasermittaus, CT-rekonstruktio. Helsinki.",
     ogLocale: "fi_FI",
   },
 
-  role: "Koneoppimis- ja konenäköinsinööri",
+  role: "Konenäkö- ja koneoppimisinsinööri",
   tagline: "Opetan koneet näkemään.",
   intro:
     "Rakennan havainnointijärjestelmiä, jotka toimivat oikeassa maailmassa: kamerat, LiDAR, " +
-    "tutka ja laserit reunalaitteilla tehtaissa ja raskaassa teollisuudessa.",
-  availability: "Avoin konenäön ja soveltavan koneoppimisen työtehtäville · Helsinki",
+    "tutka ja laserit reunalaitteilla tehtaissa ja raskaassa teollisuudessa. Seitsemän hengen " +
+    "startupissa työskentelin suoraan asiakkaiden kanssa ja rakensin neljä järjestelmää, jotka " +
+    "ovat nyt käytössä.",
+  availability: "Asun Helsingissä ja olen avoin uusille mahdollisuuksille — jutellaan mielellään puhelimessa tai kahvilla.",
 
   sections: {
     experience: {
@@ -39,7 +41,7 @@ export const fi: Content = {
         {
           lead: "2025–26",
           title: "Ohjelmistoinsinööri, ML / CV · Virelabs",
-          note: "Reaaliaikaista havainnointia raskaalle teollisuudelle, reunalaitteilla.",
+          note: "Seitsemän hengen tiimi. Työskentelin suoraan asiakkaiden kanssa; kaikki neljä järjestelmää ovat käytössä.",
           points: [
             "Monikameraseuranta katvealueiden läpi — 5 cm 6 m:n etäisyydeltä",
             "Liikkuvien ajoneuvojen 3D-rekonstruktio — viivakamerat, LiDAR, tutka",
@@ -47,9 +49,15 @@ export const fi: Content = {
             "OCR teollisuuspakkauksiin enemmistöäänestyksellä — 99,9 %",
           ],
         },
-        { lead: "2024", title: "Tutkimusavustaja · LUT-yliopisto", note: "Syväoppimista rajoitetun kulman CT-rekonstruktioon." },
+        { lead: "2024", title: "Tutkimusavustaja · LUT-yliopisto", note: "Syväoppimista rajoitetun kulman CT:hen. Artikkelin ensimmäinen kirjoittaja; esitin sen SCIA 2025 -konferenssissa." },
         { lead: "2024–25", title: "Freelance-datatieteilijä", note: "Ravintolan asiakasmäärän ennustaminen ruokalistasta ruokahävikin vähentämiseksi." },
-        { lead: "2020–21", title: "Rauhanturvaaja · UNIFIL, Libanon", note: "Ryhmän varajohtaja, sitten ryhmänjohtaja ja partion varajohtaja." },
+      ],
+    },
+    leadership: {
+      heading: "Johtaminen",
+      rows: [
+        { lead: "2021–22", title: "Projektipäällikkö · Lateksii, LUTin ainejärjestö", note: "Johdin järjestävää tiimiä ja vapaaehtoisia; tapahtumia jopa 900 hengelle." },
+        { lead: "2020–21", title: "Rauhanturvaaja · UNIFIL, Libanon", note: "Ryhmän varajohtaja; ylennetty osa-aikaiseksi ryhmänjohtajaksi ja sitten partion varajohtajaksi." },
       ],
     },
     // Paper titles stay in English: that is what they are published as.
@@ -59,17 +67,21 @@ export const fi: Content = {
         {
           lead: "2026",
           title: "New spherical codes by tuning an annealing solver",
-          note: "Preprint, ainoa kirjoittaja. Uusi paras tunnettu ratkaisu 15 %:lle 29 670 tapauksesta.",
+          note: "Preprint, ainoa kirjoittaja. Yli 3 000 voimassa olevaa ennätystä spherical-codes.org-taulukossa.",
           links: [
             { label: "arXiv", url: "https://arxiv.org/abs/2610.19988" },
             { label: "koodi", url: "https://github.com/ilmari99/tammes_BLASE" },
+            { label: "ennätykset", url: "https://spherical-codes.org/" },
           ],
         },
         {
           lead: "2025",
           title: "Data-efficient limited-angle CT using deep priors and regularization",
-          note: "SCIA (IEEE), ensimmäinen kirjoittaja.",
-          links: [{ label: "arXiv", url: "https://arxiv.org/abs/2502.12293" }],
+          note: "SCIA 2025 (Springer LNCS). Ensimmäinen kirjoittaja ja esittäjä.",
+          links: [
+            { label: "Springer", url: "https://doi.org/10.1007/978-3-031-95918-9_26" },
+            { label: "arXiv", url: "https://arxiv.org/abs/2502.12293" },
+          ],
         },
         {
           lead: "2025",
@@ -115,7 +127,7 @@ export const fi: Content = {
       heading: "Koulutus",
       rows: [
         { lead: "2025", title: "DI, konenäkö ja hahmontunnistus · LUT-yliopisto", note: "Keskiarvo 4,2 / 5. Vaihto IST Lissabonissa." },
-        { lead: "nyt", title: "Maisteri, robotiikka ja automaatio · Aalto-yliopisto" },
+        { lead: "nyt", title: "Maisteri, robotiikka ja automaatio · Aalto-yliopisto", note: "Osa-aikaisesti." },
       ],
     },
     skills: {
@@ -124,17 +136,18 @@ export const fi: Content = {
         { lead: "Anturit", title: "Kamerat · LiDAR · tutka · lasertriangulaatio · IMU" },
         { lead: "Menetelmät", title: "Syväoppiminen · 3D-näkö · seuranta · anturifuusio · optimointi" },
         { lead: "Työkalut", title: "Python · C · Docker · Git · Linux · reunalaskenta · PLC" },
+        { lead: "Kielet", title: "suomi (äidinkieli) · englanti (sujuva)" },
       ],
     },
   },
 
   whoami: [
     { lead: "nimi", title: "Ilmari Vahteristo" },
-    { lead: "rooli", title: "Koneoppimis- ja konenäköinsinööri" },
+    { lead: "rooli", title: "Konenäkö- ja koneoppimisinsinööri" },
     { lead: "rakentaa", title: "Havainnointia reunalaitteilla — kamerat, LiDAR, tutka, laserit" },
-    { lead: "tutkinto", title: "DI, LUT · nyt maisteri robotiikasta, Aalto" },
+    { lead: "tutkinto", title: "DI, LUT · maisteri robotiikasta, Aalto (osa-aikaisesti)" },
     { lead: "sijainti", title: "Helsinki" },
-    { lead: "tilanne", title: "Avoin konenäön ja soveltavan koneoppimisen työtehtäville" },
+    { lead: "tilanne", title: "Avoin uusille mahdollisuuksille — jutellaan" },
   ],
 
   why:
@@ -175,13 +188,11 @@ export const fi: Content = {
       link: "kysy vain",
       after: ".",
     },
-    boot: [
-      "// Koneoppimis- ja konenäköinsinööri. Helsinki.",
-      "// Napauta komentoa tai vieritä alas.",
-    ],
+    boot: ["// Napauta komentoa tai vieritä alas."],
     helpDesc: {
       whoami: "kuka olen, lyhyesti",
       experience: "roolit ja tulokset",
+      leadership: "ihmisten johtaminen",
       publications: "artikkelit ja opinnäytteet",
       projects: "omat projektit",
       competitions: "kilpailut",

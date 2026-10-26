@@ -76,6 +76,7 @@ export function siteHtml(c: Content): string {
       `<p class="contact">${a(mailto, profile.email)}` +
         `${a(profile.linkedin, profile.linkedinLabel)}` +
         `${a(profile.github, profile.githubLabel)}` +
+        `${a(profile.scholar, profile.scholarLabel)}` +
         `${a(profile.cv, c.ui.cv)}</p>`
     ),
     `</main>`,
@@ -114,11 +115,12 @@ export function jsonLd(c: Content): string {
     "@type": "Person",
     "@id": personId,
     name: profile.name,
+    alternateName: profile.fullName,
     url: URLS.en,
     email: "mailto:" + profile.email,
     jobTitle: c.role,
     description: c.intro,
-    sameAs: [profile.github, profile.linkedin],
+    sameAs: [profile.github, profile.linkedin, profile.scholar],
     knowsLanguage: ["fi", "en"],
     knowsAbout: c.schema.knowsAbout,
     address: { "@type": "PostalAddress", addressLocality: c.schema.locality, addressCountry: "FI" },

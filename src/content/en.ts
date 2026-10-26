@@ -4,24 +4,26 @@ export const en: Content = {
   locale: "en",
 
   meta: {
-    title: "Ilmari Vahteristo — machine learning and computer vision engineer",
+    title: "Ilmari Vahteristo — computer vision and ML engineer, Helsinki",
+    // The first sentence is what a search snippet keeps: who, where, open to what.
     description:
-      "ML and computer vision engineer in Helsinki. Real-time perception on edge hardware with " +
-      "cameras, LiDAR, radar and lasers, shipped to industry. Published research in optimization " +
-      "and computational imaging. MSc (Tech), LUT University.",
-    ogTitle: "Ilmari Vahteristo — machine learning and computer vision engineer",
+      "Computer vision and ML engineer in Helsinki, open to new opportunities. Real-time " +
+      "perception with cameras, LiDAR and radar, deployed in industry; published research in " +
+      "computational imaging and spherical codes.",
+    ogTitle: "Ilmari Vahteristo — computer vision and ML engineer, Helsinki",
     ogDescription:
       "Perception systems that run in the real world: multi-camera tracking, 3D reconstruction " +
       "of moving vehicles, laser measurement, CT reconstruction. Helsinki, Finland.",
     ogLocale: "en_US",
   },
 
-  role: "Machine learning and computer vision engineer",
+  role: "Computer vision and machine learning engineer",
   tagline: "I teach computers to see.",
   intro:
     "I build perception systems that run in the real world: cameras, LiDAR, radar and lasers " +
-    "on edge hardware, in factories and heavy industry.",
-  availability: "Open to roles in computer vision and applied ML · Helsinki",
+    "on edge hardware, in factories and heavy industry. At a seven-person startup I worked " +
+    "directly with customers and built four systems that are now deployed.",
+  availability: "Based in Helsinki and open to new opportunities — happy to talk over a call or coffee.",
 
   sections: {
     experience: {
@@ -30,7 +32,7 @@ export const en: Content = {
         {
           lead: "2025–26",
           title: "Software Engineer, ML / CV · Virelabs",
-          note: "Real-time perception for heavy industry, on edge hardware.",
+          note: "A team of seven. Worked directly with customers; all four systems are deployed.",
           points: [
             "Multi-camera tracking through occlusions — 5 cm at 6 m",
             "3D reconstruction of moving vehicles — line cameras, LiDAR, radar",
@@ -38,9 +40,15 @@ export const en: Content = {
             "OCR on industrial packaging, with majority voting — 99.9 %",
           ],
         },
-        { lead: "2024", title: "Research Assistant · LUT University", note: "Deep learning for limited-angle CT reconstruction." },
+        { lead: "2024", title: "Research Assistant · LUT University", note: "Deep learning for limited-angle CT. First author of the paper; presented it at SCIA 2025." },
         { lead: "2024–25", title: "Freelance data scientist", note: "Predicted restaurant customer volume from the menu, to cut food waste." },
-        { lead: "2020–21", title: "Peacekeeper · UNIFIL, Lebanon", note: "Squad co-lead, then squad lead and team co-lead." },
+      ],
+    },
+    leadership: {
+      heading: "Leadership",
+      rows: [
+        { lead: "2021–22", title: "Project Manager · Lateksii, LUT student guild", note: "Led the organizing team and volunteers; events of up to 900 people." },
+        { lead: "2020–21", title: "Peacekeeper · UNIFIL, Lebanon", note: "Squad co-lead; promoted to part-time squad lead, then team co-lead." },
       ],
     },
     publications: {
@@ -49,17 +57,22 @@ export const en: Content = {
         {
           lead: "2026",
           title: "New spherical codes by tuning an annealing solver",
-          note: "Preprint, sole author. New best-known codes for 15 % of 29,670 cases.",
+          note: "Preprint, sole author. Holds over 3,000 of the current records on spherical-codes.org.",
           links: [
             { label: "arXiv", url: "https://arxiv.org/abs/2610.19988" },
             { label: "code", url: "https://github.com/ilmari99/tammes_BLASE" },
+            { label: "records", url: "https://spherical-codes.org/" },
           ],
         },
         {
           lead: "2025",
           title: "Data-efficient limited-angle CT using deep priors and regularization",
-          note: "SCIA (IEEE), first author.",
-          links: [{ label: "arXiv", url: "https://arxiv.org/abs/2502.12293" }],
+          note: "SCIA 2025 (Springer LNCS). First author and presenter.",
+          // The published chapter is paywalled; arXiv is the free copy.
+          links: [
+            { label: "Springer", url: "https://doi.org/10.1007/978-3-031-95918-9_26" },
+            { label: "arXiv", url: "https://arxiv.org/abs/2502.12293" },
+          ],
         },
         {
           lead: "2025",
@@ -105,7 +118,7 @@ export const en: Content = {
       heading: "Education",
       rows: [
         { lead: "2025", title: "MSc (Tech), Computer Vision · LUT University", note: "GPA 4.2 / 5. Exchange at IST Lisbon." },
-        { lead: "now", title: "MSc, Robotics and Automation · Aalto University" },
+        { lead: "now", title: "MSc, Robotics and Automation · Aalto University", note: "Part-time." },
       ],
     },
     skills: {
@@ -114,6 +127,7 @@ export const en: Content = {
         { lead: "Sensors", title: "Cameras · LiDAR · radar · laser triangulation · IMU" },
         { lead: "Methods", title: "Deep learning · 3D vision · tracking · sensor fusion · optimization" },
         { lead: "Tools", title: "Python · C · Docker · Git · Linux · edge compute · PLC" },
+        { lead: "Languages", title: "Finnish (native) · English (fluent)" },
       ],
     },
   },
@@ -121,11 +135,11 @@ export const en: Content = {
   // Reads like the output of a real `whoami`: a card, not a speech.
   whoami: [
     { lead: "name", title: "Ilmari Vahteristo" },
-    { lead: "role", title: "Machine learning and computer vision engineer" },
+    { lead: "role", title: "Computer vision and machine learning engineer" },
     { lead: "builds", title: "Perception on edge hardware — cameras, LiDAR, radar, lasers" },
-    { lead: "degree", title: "MSc (Tech), LUT · now MSc Robotics, Aalto" },
+    { lead: "degree", title: "MSc (Tech), LUT · MSc Robotics, Aalto (part-time)" },
     { lead: "based", title: "Helsinki, Finland" },
-    { lead: "status", title: "Open to roles in computer vision and applied ML" },
+    { lead: "status", title: "Open to new opportunities — happy to talk" },
   ],
 
   why:
@@ -179,13 +193,11 @@ export const en: Content = {
       link: "just ask",
       after: ".",
     },
-    boot: [
-      "// Machine learning and computer vision engineer. Helsinki.",
-      "// Tap a command, or just scroll.",
-    ],
+    boot: ["// Tap a command, or just scroll."],
     helpDesc: {
       whoami: "who I am, briefly",
       experience: "roles and results",
+      leadership: "leading people",
       publications: "papers and theses",
       projects: "side projects",
       competitions: "competitions",
