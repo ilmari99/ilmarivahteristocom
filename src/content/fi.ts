@@ -56,7 +56,7 @@ export const fi: Content = {
       heading: "Johtaminen",
       rows: [
         { lead: "2021–22", title: "Projektipäällikkö · Lateksii, LUTin ainejärjestö", note: "Johdin järjestävää tiimiä ja vapaaehtoisia; tapahtumia jopa 900 hengelle." },
-        { lead: "2020–21", title: "Rauhanturvaaja · UNIFIL, Libanon", note: "Ryhmän varajohtaja; ylennetty osa-aikaiseksi partion varajohtajaksi." },
+        { lead: "2020–21", title: "Rauhanturvaaja · UNIFIL, Libanon", note: "Ryhmän varajohtaja; ylennetty osa-aikaiseksi ryhmänjohtajaksi ja sitten partion varajohtajaksi." },
       ],
     },
     // Paper titles stay in English: that is what they are published as.
