@@ -16,8 +16,7 @@ export const fi: Content = {
     title: "Ilmari Vahteristo — konenäkö- ja koneoppimisinsinööri, Helsinki",
     description:
       "Konenäkö- ja koneoppimisinsinööri Helsingissä, avoin uusille mahdollisuuksille. " +
-      "Reaaliaikaista havainnointia kameroilla, LiDARilla ja tutkalla, käytössä teollisuudessa; " +
-      "julkaisuja laskennallisesta kuvantamisesta ja pallokoodeista.",
+      "Kamera-, LiDAR- ja tutkajärjestelmiä teollisuudessa; julkaisuja CT:stä ja pallokoodeista.",
     ogTitle: "Ilmari Vahteristo — konenäkö- ja koneoppimisinsinööri, Helsinki",
     ogDescription:
       "Havainnointijärjestelmiä oikeaan maailmaan: monikameraseuranta, liikkuvien ajoneuvojen " +
@@ -70,7 +69,7 @@ export const fi: Content = {
           note: "Preprint, ainoa kirjoittaja. Yli 3 000 voimassa olevaa ennätystä spherical-codes.org-taulukossa.",
           links: [
             { label: "arXiv", url: "https://arxiv.org/abs/2610.19988" },
-            { label: "koodi", url: "https://github.com/ilmari99/tammes_BLASE" },
+            { label: "koodi", url: "https://github.com/ilmari99/Spherical-code-solver" },
             { label: "ennätykset", url: "https://spherical-codes.org/" },
           ],
         },
@@ -135,7 +134,8 @@ export const fi: Content = {
       rows: [
         { lead: "Anturit", title: "Kamerat · LiDAR · tutka · lasertriangulaatio · IMU" },
         { lead: "Menetelmät", title: "Syväoppiminen · 3D-näkö · seuranta · anturifuusio · optimointi" },
-        { lead: "Työkalut", title: "Python · C · Docker · Git · Linux · reunalaskenta · PLC" },
+        { lead: "Työkalut", title: "Python · PyTorch · TensorFlow · ONNX · OpenCV · C · Docker · Git · Linux" },
+        { lead: "Laskenta", title: "Reunalaitteet · PLC · rinnakkais- ja supertietokonelaskenta" },
         { lead: "Kielet", title: "suomi (äidinkieli) · englanti (sujuva)" },
       ],
     },

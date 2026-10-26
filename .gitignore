@@ -36,7 +36,7 @@ pnpm-debug.log*
 
 # personal source material, not for the public repo
 linkedin-profile-*.pdf
-ilmari-resume.*
+ilmari-resume*
 
 # local Claude Code settings
 .claude/

@@ -24,6 +24,7 @@ const SIZE = 14;
 const LH = 22;
 const PAD_TOP = 2;
 const DEFAULT = "#e7e7e9";
+const TOP_FADE = 26; // px — height of the fade on the screen's top edge, .screen in style.css
 
 // physics — a rubber band of letters that snaps and lets the torn ends hang
 const DAMP = 0.86;
@@ -163,7 +164,9 @@ export class Terminal {
     this.layout(block);
     block.reveal = opts.instant ? block.total : 0;
     this.draw(block);
-    this.scrollToBottom();
+    // An output's command line is the block just before it; anything printed instantly (the
+    // command line itself, boot lines) is its own anchor.
+    this.scrollToShow(opts.instant ? wrap : (wrap.previousElementSibling as HTMLElement | null) ?? wrap);
     this.ensureLoop();
   }
 
@@ -471,7 +474,16 @@ export class Terminal {
     this.ensureLoop();
   }
 
-  private scrollToBottom() {
-    this.screen.scrollTop = this.screen.scrollHeight;
+  /**
+   * Scroll to the bottom, as a terminal does — unless that would push the start of the new
+   * output (its command line) off the top, as a tall output on a phone screen would. Then
+   * the command line goes to the top and the output reads from its beginning.
+   */
+  private scrollToShow(anchor: HTMLElement) {
+    const toBottom = this.screen.scrollHeight - this.screen.clientHeight;
+    // .screen is position: relative, so offsetTop is measured from its top. TOP_FADE keeps
+    // the command line clear of the faded top edge (the mask in style.css).
+    const toAnchor = anchor.offsetTop - TOP_FADE;
+    this.screen.scrollTop = Math.max(0, Math.min(toBottom, toAnchor));
   }
 }

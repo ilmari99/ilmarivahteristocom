@@ -5,11 +5,10 @@ export const en: Content = {
 
   meta: {
     title: "Ilmari Vahteristo — computer vision and ML engineer, Helsinki",
-    // The first sentence is what a search snippet keeps: who, where, open to what.
+    // Under ~160 characters, or search engines cut it. Who, where, open to what, then proof.
     description:
-      "Computer vision and ML engineer in Helsinki, open to new opportunities. Real-time " +
-      "perception with cameras, LiDAR and radar, deployed in industry; published research in " +
-      "computational imaging and spherical codes.",
+      "Computer vision and ML engineer in Helsinki, open to new opportunities. Camera, LiDAR " +
+      "and radar systems deployed in industry; papers on CT and spherical codes.",
     ogTitle: "Ilmari Vahteristo — computer vision and ML engineer, Helsinki",
     ogDescription:
       "Perception systems that run in the real world: multi-camera tracking, 3D reconstruction " +
@@ -60,7 +59,7 @@ export const en: Content = {
           note: "Preprint, sole author. Holds over 3,000 of the current records on spherical-codes.org.",
           links: [
             { label: "arXiv", url: "https://arxiv.org/abs/2610.19988" },
-            { label: "code", url: "https://github.com/ilmari99/tammes_BLASE" },
+            { label: "code", url: "https://github.com/ilmari99/Spherical-code-solver" },
             { label: "records", url: "https://spherical-codes.org/" },
           ],
         },
@@ -126,7 +125,8 @@ export const en: Content = {
       rows: [
         { lead: "Sensors", title: "Cameras · LiDAR · radar · laser triangulation · IMU" },
         { lead: "Methods", title: "Deep learning · 3D vision · tracking · sensor fusion · optimization" },
-        { lead: "Tools", title: "Python · C · Docker · Git · Linux · edge compute · PLC" },
+        { lead: "Tools", title: "Python · PyTorch · TensorFlow · ONNX · OpenCV · C · Docker · Git · Linux" },
+        { lead: "Compute", title: "Edge devices · PLC · parallel and supercomputing" },
         { lead: "Languages", title: "Finnish (native) · English (fluent)" },
       ],
     },
