@@ -47,7 +47,7 @@ export const en: Content = {
       heading: "Leadership",
       rows: [
         { lead: "2021–22", title: "Project Manager · Lateksii, LUT student guild", note: "Led the organizing team and volunteers; events of up to 900 people." },
-        { lead: "2020–21", title: "Peacekeeper · UNIFIL, Lebanon", note: "Squad co-lead; promoted to squad lead, then team co-lead." },
+        { lead: "2020–21", title: "Peacekeeper · UNIFIL, Lebanon", note: "Squad co-lead; promoted to part-time team co-lead." },
       ],
     },
     publications: {
