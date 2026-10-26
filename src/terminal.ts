@@ -39,6 +39,8 @@ const LOOSE_WINDOW = 7;       // letters on each side of a break that go loose, 
 export type Run = { text: string; color?: string; href?: string; cmd?: string; weight?: number };
 export type Paragraph = Run[];
 export type Output = Paragraph[];
+/** instant: no typing animation. command: this is a command line, which opens a new answer. */
+export type PrintOpts = { instant?: boolean; command?: boolean };
 
 type Glyph = {
   ch: string;
@@ -77,7 +79,7 @@ export class Terminal {
   private ctxMeasure = document.createElement("canvas").getContext("2d")!;
   private seg = new Intl.Segmenter(undefined, { granularity: "grapheme" });
   private ready = false;
-  private pending: { out: Output; opts: { instant?: boolean } }[] = [];
+  private pending: { out: Output; opts: PrintOpts }[] = [];
   private drag: Drag | null = null;
   private lastWidth = -1;
 
@@ -119,7 +121,7 @@ export class Terminal {
     this.screen.innerHTML = "";
   }
 
-  print(out: Output, opts: { instant?: boolean } = {}) {
+  print(out: Output, opts: PrintOpts = {}) {
     if (!this.ready) {
       this.pending.push({ out, opts });
       return;
@@ -127,9 +129,9 @@ export class Terminal {
     this._print(out, opts);
   }
 
-  private _print(out: Output, opts: { instant?: boolean } = {}) {
+  private _print(out: Output, opts: PrintOpts = {}) {
     const wrap = document.createElement("div");
-    wrap.className = "oblock";
+    wrap.className = opts.command ? "oblock oblock-cmd" : "oblock";
     const canvas = document.createElement("canvas");
     canvas.className = "ocanvas";
     wrap.appendChild(canvas);

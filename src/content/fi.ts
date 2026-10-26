@@ -38,7 +38,7 @@ export const fi: Content = {
       heading: "Työkokemus",
       rows: [
         {
-          lead: "2025–26",
+          lead: "5/2025 – 8/2026",
           title: "Ohjelmistoinsinööri, ML / CV · Virelabs",
           note: "Seitsemän hengen tiimi. Työskentelin suoraan asiakkaiden kanssa; kaikki neljä järjestelmää ovat käytössä.",
           points: [
@@ -48,15 +48,15 @@ export const fi: Content = {
             "OCR teollisuuspakkauksiin enemmistöäänestyksellä — 99,9 %",
           ],
         },
-        { lead: "2024", title: "Tutkimusavustaja · LUT-yliopisto", note: "Syväoppimista rajoitetun kulman CT:hen. Artikkelin ensimmäinen kirjoittaja; esitin sen SCIA 2025 -konferenssissa." },
-        { lead: "2024–25", title: "Freelance-datatieteilijä", note: "Ravintolan asiakasmäärän ennustaminen ruokalistasta ruokahävikin vähentämiseksi." },
+        { lead: "4/2024 – 8/2024", title: "Tutkimusavustaja · LUT-yliopisto", note: "Syväoppimista rajoitetun kulman CT:hen. Artikkelin ensimmäinen kirjoittaja; esitin sen SCIA 2025 -konferenssissa." },
+        { lead: "1/2024 – 4/2025", title: "Freelance-datatieteilijä", note: "Ravintolan asiakasmäärän ennustaminen ruokalistasta ruokahävikin vähentämiseksi." },
       ],
     },
     leadership: {
       heading: "Johtaminen",
       rows: [
-        { lead: "2021–22", title: "Projektipäällikkö · Lateksii, LUTin ainejärjestö", note: "Johdin järjestävää tiimiä ja vapaaehtoisia; tapahtumia jopa 900 hengelle." },
-        { lead: "2020–21", title: "Rauhanturvaaja · UNIFIL, Libanon", note: "Ryhmän varajohtaja; ylennetty osa-aikaiseksi ryhmänjohtajaksi ja sitten partion varajohtajaksi." },
+        { lead: "1/2021 – 12/2022", title: "Projektipäällikkö · Lateksii, LUTin ainejärjestö", note: "Johdin järjestävää tiimiä ja vapaaehtoisia; tapahtumia jopa 900 hengelle." },
+        { lead: "11/2020 – 7/2021", title: "Rauhanturvaaja · UNIFIL, Libanon", note: "Ryhmän varajohtaja; ylennetty osa-aikaiseksi ryhmänjohtajaksi ja sitten partion varajohtajaksi." },
       ],
     },
     // Paper titles stay in English: that is what they are published as.

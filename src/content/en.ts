@@ -29,7 +29,7 @@ export const en: Content = {
       heading: "Experience",
       rows: [
         {
-          lead: "2025–26",
+          lead: "5/2025 – 8/2026",
           title: "Software Engineer, ML / CV · Virelabs",
           note: "A team of seven. Worked directly with customers; all four systems are deployed.",
           points: [
@@ -39,15 +39,15 @@ export const en: Content = {
             "OCR on industrial packaging, with majority voting — 99.9 %",
           ],
         },
-        { lead: "2024", title: "Research Assistant · LUT University", note: "Deep learning for limited-angle CT. First author of the paper; presented it at SCIA 2025." },
-        { lead: "2024–25", title: "Freelance data scientist", note: "Predicted restaurant customer volume from the menu, to cut food waste." },
+        { lead: "4/2024 – 8/2024", title: "Research Assistant · LUT University", note: "Deep learning for limited-angle CT. First author of the paper; presented it at SCIA 2025." },
+        { lead: "1/2024 – 4/2025", title: "Freelance data scientist", note: "Predicted restaurant customer volume from the menu, to cut food waste." },
       ],
     },
     leadership: {
       heading: "Leadership",
       rows: [
-        { lead: "2021–22", title: "Project Manager · Lateksii, LUT student guild", note: "Led the organizing team and volunteers; events of up to 900 people." },
-        { lead: "2020–21", title: "Peacekeeper · UNIFIL, Lebanon", note: "Squad co-lead; promoted to part-time squad lead, then team co-lead." },
+        { lead: "1/2021 – 12/2022", title: "Project Manager · Lateksii, LUT student guild", note: "Led the organizing team and volunteers; events of up to 900 people." },
+        { lead: "11/2020 – 7/2021", title: "Peacekeeper · UNIFIL, Lebanon", note: "Squad co-lead; promoted to part-time squad lead, then team co-lead." },
       ],
     },
     publications: {

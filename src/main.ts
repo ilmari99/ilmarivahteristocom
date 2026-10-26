@@ -17,7 +17,7 @@ const locale = isLocale(langAttr) ? langAttr : "en";
 const c: Content = locales[locale];
 const alt = other(locale);
 
-const C = { text: "#e7e7e9", dim: "#6b6f76", green: "#7dd3a0", acc: "#4ade80", err: "#f87171", name: "#f4f4f5" };
+const C = { text: "#e7e7e9", dim: "#8f949c", green: "#7dd3a0", acc: "#4ade80", err: "#f87171", name: "#f4f4f5" };
 const t = (text: string, color = C.text, weight = 500): Run => ({ text, color, weight });
 const link = (text: string, href: string): Run => ({ text, href, color: C.acc });
 const cmdlink = (text: string, cmd: string): Run => ({ text, cmd, color: C.acc });
@@ -156,7 +156,7 @@ commands.email = commands.contact;
 function run(raw: string) {
   const cmd = raw.trim();
   if (!cmd) return;
-  term.print([[t(profile.host + ":~$ ", C.acc), t(cmd)]], { instant: true });
+  term.print([[t(profile.host + ":~$ ", C.acc), t(cmd)]], { instant: true, command: true });
   const [name, ...args] = cmd.split(/\s+/);
   const fn = commands[name.toLowerCase()];
   if (!fn) {

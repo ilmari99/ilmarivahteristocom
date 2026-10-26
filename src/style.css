@@ -3,7 +3,8 @@
   --term: #0d0e10;
   --bar: #131417;
   --text: #e7e7e9;
-  --dim: #6b6f76;
+  --dim: #8f949c;      /* labels, dates: ~6.4:1 on --bg */
+  --muted: #b3b7be;    /* secondary content (notes): brighter than labels, quieter than text */
   --line: #202227;
   --accent: #4ade80;
   --mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
@@ -99,16 +100,21 @@ body::before {
   scrollbar-width: thin;
   scrollbar-color: #2a2c31 transparent;
 }
-/* Output scrolls up under the banner; fade the top edge so a half-scrolled line reads as
-   "more above" instead of being sliced through. */
+/* Fade both edges, so a half-scrolled line reads as "more above / below" instead of being
+   sliced through. The bottom fade is shallower than the screen's bottom padding, so the last
+   line of a fully scrolled answer stays crisp. */
 .screen {
-  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 26px);
-  mask-image: linear-gradient(to bottom, transparent 0, #000 26px);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 26px, #000 calc(100% - 14px), transparent 100%);
+  mask-image: linear-gradient(to bottom, transparent 0, #000 26px, #000 calc(100% - 14px), transparent 100%);
 }
 .screen::-webkit-scrollbar { width: 8px; }
 .screen::-webkit-scrollbar-thumb { background: #24262b; border-radius: 8px; }
 
 .oblock { animation: fade 0.16s ease both; }
+/* Each command line opens a new answer: space and a faint rule above it, so it is clear where
+   one answer ends and the next begins. Not above the very first thing on screen. */
+.oblock-cmd { margin-top: 14px; padding-top: 12px; border-top: 1px solid rgba(255, 255, 255, 0.08); }
+.oblock-cmd:first-child { margin-top: 0; padding-top: 0; border-top: 0; }
 @keyframes fade { from { opacity: 0; } to { opacity: 1; } }
 /* touch-action:none so dragging a letter on a touchscreen grabs & stretches it instead of
    being hijacked into a page/terminal scroll (which cancels the pointer and freezes the drag). */
@@ -221,9 +227,11 @@ body::before {
   gap: 12px 18px;
 }
 #site .rows li { display: contents; }
-.rows .lead { color: var(--dim); font-size: 13px; line-height: 1.6; white-space: nowrap; }
+/* A date range ("5/2025 – 8/2026") wraps onto two lines within the column; single-word
+   leads never break. */
+.rows .lead { color: var(--dim); font-size: 13px; line-height: 1.6; }
 .rows .title { color: var(--text); line-height: 1.6; }
-.rows .note { display: block; color: var(--dim); font-size: 13px; line-height: 1.6; }
+.rows .note { display: block; color: var(--muted); font-size: 13px; line-height: 1.6; }
 .rows .links a { margin-left: 10px; font-size: 13px; }
 #site .rows .points { list-style: none; padding: 0; margin: 4px 0 0; }
 #site .rows .points li { display: block; margin: 2px 0; color: #c8cace; font-size: 13px; line-height: 1.6; }
