@@ -108,6 +108,33 @@ export function headTags(c: Content): string {
   ].join("\n    ");
 }
 
+/**
+ * sitemap.xml, generated so it cannot drift from the pages: one <url> per language, each
+ * listing every language as an alternate.
+ */
+export function sitemapXml(): string {
+  const locales = Object.keys(URLS) as Locale[];
+  const alternates = [
+    ...locales.map((l) => `    <xhtml:link rel="alternate" hreflang="${l}" href="${URLS[l]}" />`),
+    `    <xhtml:link rel="alternate" hreflang="x-default" href="${URLS.en}" />`,
+  ].join("\n");
+  const urls = locales
+    .map((l) =>
+      [`  <url>`, `    <loc>${URLS[l]}</loc>`, alternates,
+       `    <changefreq>monthly</changefreq>`, `    <priority>1.0</priority>`, `  </url>`].join("\n")
+    )
+    .join("\n");
+  return [
+    `<?xml version="1.0" encoding="UTF-8"?>`,
+    `<urlset`,
+    `  xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"`,
+    `  xmlns:xhtml="http://www.w3.org/1999/xhtml">`,
+    urls,
+    `</urlset>`,
+    ``,
+  ].join("\n");
+}
+
 export function jsonLd(c: Content): string {
   const pageUrl = URLS[c.locale];
 

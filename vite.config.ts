@@ -1,6 +1,6 @@
 import { defineConfig, type Plugin } from "vite";
 import { resolve } from "node:path";
-import { siteHtml, headTags, jsonLd, langSwitch } from "./src/seo";
+import { siteHtml, headTags, jsonLd, langSwitch, sitemapXml } from "./src/seo";
 import { locales } from "./src/content";
 
 // The site paints to <canvas>, so the shipped HTML would otherwise be an empty <div>. This
@@ -20,6 +20,9 @@ function staticContent(): Plugin {
         .replace("<!--seo-langswitch-->", langSwitch(c))
         .replace("<!--seo-content-->", siteHtml(c))
         .replace("<!--seo-jsonld-->", jsonLd(c));
+    },
+    generateBundle() {
+      this.emitFile({ type: "asset", fileName: "sitemap.xml", source: sitemapXml() });
     },
   };
 }

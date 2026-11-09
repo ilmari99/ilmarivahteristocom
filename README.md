@@ -62,8 +62,9 @@ points at the language that has them (`ui.blogElsewhere`).
 
 When adding a third language, touch all of: `types.ts` `Locale`, `PATHS`/`URLS` in
 `profile.ts`, `locales` in `content/index.ts`, a new `<lang>/index.html`, the
-`rollupOptions.input` map, the `ctx.path` branch, and `public/sitemap.xml`. The `hreflang`
-tags are generated from `URLS` in `headTags()`, so they follow automatically.
+`rollupOptions.input` map, and the `ctx.path` branch. The `hreflang` tags (`headTags()`) and
+`sitemap.xml` (`sitemapXml()`, emitted at build) are generated from `URLS`, so they follow
+automatically.
 
 There is deliberately **no automatic redirect by `Accept-Language`** — it breaks crawling and
 overrides a deliberate choice. The switcher above the terminal is a plain `<a>`.
