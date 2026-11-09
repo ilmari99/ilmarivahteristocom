@@ -66,6 +66,11 @@ When adding a third language, touch all of: `types.ts` `Locale`, `PATHS`/`URLS` 
 `sitemap.xml` (`sitemapXml()`, emitted at build) are generated from `URLS`, so they follow
 automatically.
 
+Which languages search engines see is one setting, `INDEXED` in `profile.ts`. The others
+are still built and served, but carry `noindex` and are left out of `hreflang` and the
+sitemap. Do not also block them in `robots.txt`: a crawler that cannot fetch a page never
+sees its `noindex`.
+
 There is deliberately **no automatic redirect by `Accept-Language`** — it breaks crawling and
 overrides a deliberate choice. The switcher above the terminal is a plain `<a>`.
 

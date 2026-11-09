@@ -6,7 +6,7 @@
 // content rather than a replacement for it.
 
 import {
-  profile, ANALYTICS, URLS, PATHS, SECTION_IDS, other, type Content, type Link, type Locale, type Row,
+  profile, ANALYTICS, INDEXED, URLS, PATHS, SECTION_IDS, other, type Content, type Link, type Locale, type Row,
 } from "./content";
 
 const esc = (s: string) =>
@@ -23,13 +23,13 @@ const section = (id: string, heading: string, body: string) =>
  * The language switcher, shown one way only: Finnish -> English, never the reverse.
  *
  * The Finnish copy is a machine draft awaiting proofreading, so the English page does not
- * advertise it. Discovery is left to the hreflang tags in headTags() and the sitemap, which
- * is how Google is meant to learn about an alternate language anyway — no link required.
+ * advertise it, and while Finnish is not in INDEXED search engines are told to skip it too.
  *
  * Deliberately NOT a CSS-hidden link: markup served to crawlers but invisible to people is
  * a hidden link, and risks the whole domain to save one <a>. Remove it or keep it honest.
  *
- * To restore the pair once the Finnish reads right, drop the `locale` check.
+ * To restore the pair once the Finnish reads right, drop the `locale` check and add "fi" to
+ * INDEXED.
  */
 export function langSwitch(c: Content): string {
   if (c.locale === "en") return "";
@@ -84,17 +84,27 @@ export function siteHtml(c: Content): string {
   ].join("");
 }
 
+// hreflang pairs the indexed languages with each other; with only one there is nothing to pair.
+const hreflangTags = (): string[] =>
+  INDEXED.length < 2
+    ? []
+    : [
+        ...INDEXED.map((l) => `<link rel="alternate" hreflang="${l}" href="${esc(URLS[l])}" />`),
+        `<link rel="alternate" hreflang="x-default" href="${esc(URLS.en)}" />`,
+      ];
+
 /** <head> tags that differ per language: title, description, canonical, hreflang, OG. */
 export function headTags(c: Content): string {
   const url = URLS[c.locale];
+  const indexed = INDEXED.includes(c.locale);
   return [
     `<title>${esc(c.meta.title)}</title>`,
     `<meta name="description" content="${esc(c.meta.description)}" />`,
     // Self-referencing canonical: each language is its own page, not a duplicate of the other.
     `<link rel="canonical" href="${esc(url)}" />`,
-    `<link rel="alternate" hreflang="en" href="${esc(URLS.en)}" />`,
-    `<link rel="alternate" hreflang="fi" href="${esc(URLS.fi)}" />`,
-    `<link rel="alternate" hreflang="x-default" href="${esc(URLS.en)}" />`,
+    // Out of search, but must stay crawlable (not blocked in robots.txt): a crawler that
+    // cannot fetch the page never sees the noindex, and keeps its old copy.
+    ...(indexed ? hreflangTags() : [`<meta name="robots" content="noindex" />`]),
     `<meta property="og:title" content="${esc(c.meta.ogTitle)}" />`,
     `<meta property="og:description" content="${esc(c.meta.ogDescription)}" />`,
     `<meta property="og:type" content="profile" />`,
@@ -109,18 +119,16 @@ export function headTags(c: Content): string {
 }
 
 /**
- * sitemap.xml, generated so it cannot drift from the pages: one <url> per language, each
- * listing every language as an alternate.
+ * sitemap.xml, generated so it cannot drift from the pages: one <url> per indexed language,
+ * each listing the indexed languages as alternates when there is more than one.
  */
 export function sitemapXml(): string {
-  const locales = Object.keys(URLS) as Locale[];
-  const alternates = [
-    ...locales.map((l) => `    <xhtml:link rel="alternate" hreflang="${l}" href="${URLS[l]}" />`),
-    `    <xhtml:link rel="alternate" hreflang="x-default" href="${URLS.en}" />`,
-  ].join("\n");
-  const urls = locales
+  const alternates = hreflangTags().map((tag) =>
+    "    " + tag.replace("<link ", "<xhtml:link ")
+  );
+  const urls = INDEXED
     .map((l) =>
-      [`  <url>`, `    <loc>${URLS[l]}</loc>`, alternates,
+      [`  <url>`, `    <loc>${URLS[l]}</loc>`, ...alternates,
        `    <changefreq>monthly</changefreq>`, `    <priority>1.0</priority>`, `  </url>`].join("\n")
     )
     .join("\n");

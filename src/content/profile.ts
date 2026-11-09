@@ -1,3 +1,5 @@
+import type { Locale } from "./types";
+
 // Language-neutral facts. Not duplicated per locale — a second copy is a second thing to
 // forget to update.
 
@@ -27,6 +29,17 @@ export const ANALYTICS = {
   /** Only this host reports, so local previews and forks send nothing. */
   domain: "ilmarivahteristo.com",
 };
+
+/**
+ * The languages search engines are told about. The rest are still built and reachable by
+ * link, but carry noindex and appear in neither the hreflang tags nor the sitemap.
+ *
+ * Finnish is out until it is proofread: with hreflang pointing at it, Google showed its
+ * machine-draft copy to Finnish-language searches for my name (Nov 2026), and a Finnish page
+ * brings no searches the English one cannot, beyond generic Finnish keywords a personal site
+ * does not rank for anyway.
+ */
+export const INDEXED: readonly Locale[] = ["en"];
 
 /** Where each language's page lives. Used for canonical, hreflang and the switcher. */
 export const SITE = "https://ilmarivahteristo.com/";
